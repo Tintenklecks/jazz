@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#00695c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Jazz Assistant">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Jazz Assistant</title>
+<style>
+:root{--green:#00695c;--green2:#00897b;--mint:#e0f2f1;--paper:#f4f6f5;--ink:#1f2927;--muted:#54635f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Thai",Arial,sans-serif;font-size:21px;line-height:1.55}
+header{position:sticky;top:0;z-index:10;padding:calc(16px + env(safe-area-inset-top)) 18px 18px;background:var(--green);color:white;box-shadow:0 3px 14px #0003}
+header h1{margin:0 0 4px;font-size:31px}
+header p{margin:0 0 14px;font-size:18px}
+.search-wrap{display:flex;gap:8px;max-width:900px;margin:auto}
+input{width:100%;border:0;border-radius:14px;padding:15px 16px;font-size:21px;box-shadow:inset 0 0 0 1px #0001}
+button{border:0;border-radius:14px;padding:12px 16px;font-size:18px;background:white;color:var(--green);font-weight:700}
+main,.quick-menu{max-width:980px;margin:18px auto;padding:0 16px}
+.quick-menu{background:white;border-radius:20px;padding:20px;box-shadow:0 2px 12px #00000012}
+.quick-menu h2{margin:0 0 14px;font-size:27px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px}
+.menu-grid a{display:flex;align-items:center;justify-content:center;min-height:60px;padding:12px;border-radius:14px;background:var(--green2);color:white;text-decoration:none;text-align:center;font-weight:700}
+.category{scroll-margin-top:165px;margin:0 0 15px}
+details{background:white;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px #00000012}
+summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;padding:19px 20px;background:var(--mint);font-size:26px;font-weight:800}
+summary::-webkit-details-marker{display:none}
+details[open] summary span{transform:rotate(45deg)}
+summary span{font-size:30px;transition:.2s}
+.content{padding:18px}
+.card{margin:0 0 14px;padding:17px 18px;border-left:7px solid var(--green2);border-radius:12px;background:#fbfcfc}
+.thai{font-size:24px;font-weight:750}
+.german{margin-top:7px;font-size:22px;color:#374640}
+.home{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));width:64px;height:64px;display:grid;place-items:center;border-radius:50%;background:var(--green);color:white;text-decoration:none;font-size:30px;box-shadow:0 5px 18px #0005}
+.no-results{display:none;max-width:980px;margin:18px auto;padding:20px;text-align:center;background:white;border-radius:16px}
+footer{padding:24px 20px calc(24px + env(safe-area-inset-bottom));text-align:center;color:var(--muted);font-size:16px}
+@media(max-width:600px){body{font-size:19px}header h1{font-size:27px}header p{font-size:16px}summary{font-size:23px}.thai{font-size:22px}.german{font-size:20px}.menu-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header id="home">
+<h1>Jazz Assistant</h1>
+<p>คู่มือภาษาเยอรมันสำหรับการทำงานที่ Dusita Thai Spa</p>
+<div class="search-wrap">
+<input id="searchInput" type="search" inputmode="search" placeholder="ค้นหาไทยหรือเยอรมัน…" aria-label="Search">
+<button id="clearButton" type="button">Clear</button>
+</div>
+</header>
+
+<nav class="quick-menu" aria-label="Quick Menu">
+<h2>Quick Menu</h2>
+<div class="menu-grid"><a href="#telefon">Telefon</a>
+<a href="#termin">Termin</a>
+<a href="#gutschein">Gutschein</a>
+<a href="#walkin">Walk-in</a>
+<a href="#massage">Massage</a>
+<a href="#zahlung">Zahlung</a>
+<a href="#anfahrt">Anfahrt</a>
+<a href="#kundenfragen">Kundenfragen</a>
+<a href="#verabschiedung">Verabschiedung</a>
+<a href="#zahlen">Zahlen</a>
+<a href="#buchstabieren">Buchstabieren A–Z</a>
+<a href="#datum">Datum & Uhrzeit</a>
+<a href="#telefonnummer">Telefonnummer</a>
+<a href="#whatsapp">WhatsApp / E-Mail</a></div>
+</nav>
+
+<div id="noResults" class="no-results">ไม่พบข้อความ / Keine Ergebnisse gefunden.</div>
+<main>
+<section id="telefon" class="category">
+<details>
+<summary>Telefon<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">สวัสดีค่ะ/ครับ ที่นี่ Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Guten Tag, hier ist Dusita Thai Spa.</div></article>
+<article class="card"><div class="thai">ขอบคุณที่โทรหา Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Vielen Dank für Ihren Anruf bei Dusita Thai Spa.</div></article>
+<article class="card"><div class="thai">ฉันสามารถช่วยอะไรคุณได้บ้างคะ/ครับ</div><div class="german">Wie kann ich Ihnen helfen?</div></article>
+<article class="card"><div class="thai">คุณต้องการจองนวดหรือสอบถามข้อมูลเพิ่มเติมคะ/ครับ</div><div class="german">Möchten Sie einen Massagetermin buchen oder benötigen Sie weitere Informationen?</div></article>
+<article class="card"><div class="thai">กรุณารอสักครู่นะคะ/ครับ</div><div class="german">Einen Moment bitte.</div></article>
+<article class="card"><div class="thai">ขออภัยค่ะ/ครับ ช่วยพูดช้าลงได้ไหมคะ/ครับ</div><div class="german">Entschuldigung, könnten Sie bitte langsamer sprechen?</div></article>
+<article class="card"><div class="thai">ช่วยพูดอีกครั้งได้ไหมคะ/ครับ</div><div class="german">Könnten Sie das bitte noch einmal wiederholen?</div></article>
+<article class="card"><div class="thai">ฉันขอจดข้อมูลก่อนนะคะ/ครับ</div><div class="german">Ich notiere die Informationen kurz.</div></article></div>
+</details>
+</section><section id="termin" class="category">
+<details>
+<summary>Termin<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">ต้องการจองวันไหนและเวลาไหนคะ/ครับ</div><div class="german">Für welchen Tag und welche Uhrzeit möchten Sie einen Termin buchen?</div></article>
+<article class="card"><div class="thai">คุณต้องการนวดประเภทไหนคะ/ครับ</div><div class="german">Welche Massage möchten Sie gerne buchen?</div></article>
+<article class="card"><div class="thai">คุณต้องการจองสำหรับกี่ท่านคะ/ครับ</div><div class="german">Für wie viele Personen möchten Sie einen Termin buchen?</div></article>
+<article class="card"><div class="thai">ขอทราบชื่อของคุณสำหรับการจองค่ะ/ครับ</div><div class="german">Darf ich bitte Ihren Namen für die Buchung haben?</div></article>
+<article class="card"><div class="thai">กรุณาแจ้งหมายเลขโทรศัพท์ของคุณค่ะ/ครับ</div><div class="german">Bitte geben Sie mir Ihre Telefonnummer.</div></article>
+<article class="card"><div class="thai">ขอเช็กตารางเวลาสักครู่นะคะ/ครับ</div><div class="german">Ich überprüfe kurz den Terminplan.</div></article>
+<article class="card"><div class="thai">เวลานี้เต็มแล้วค่ะ/ครับ</div><div class="german">Dieser Termin ist leider schon ausgebucht.</div></article>
+<article class="card"><div class="thai">เรามีเวลาอื่นให้เลือกค่ะ/ครับ</div><div class="german">Wir können Ihnen eine andere Zeit anbieten.</div></article>
+<article class="card"><div class="thai">การจองของคุณได้รับการยืนยันแล้วค่ะ/ครับ</div><div class="german">Ihr Termin ist bestätigt.</div></article>
+<article class="card"><div class="thai">กรุณามาถึงก่อนเวลานัดประมาณ 5–10 นาทีค่ะ/ครับ</div><div class="german">Bitte kommen Sie etwa 5–10 Minuten vor Ihrem Termin.</div></article></div>
+</details>
+</section><section id="gutschein" class="category">
+<details>
+<summary>Gutschein<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">คุณสนใจซื้อบัตรกำนัลของ Dusita Thai Spa ไหมคะ/ครับ</div><div class="german">Möchten Sie einen Gutschein von Dusita Thai Spa kaufen?</div></article>
+<article class="card"><div class="thai">คุณต้องการบัตรกำนัลมูลค่าเท่าไหร่คะ/ครับ</div><div class="german">Welchen Wert soll der Gutschein haben?</div></article>
+<article class="card"><div class="thai">บัตรกำนัลสามารถใช้ได้ที่ Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Der Gutschein kann bei Dusita Thai Spa eingelöst werden.</div></article>
+<article class="card"><div class="thai">สามารถมารับบัตรกำนัลที่ร้านได้ค่ะ/ครับ</div><div class="german">Sie können den Gutschein direkt bei uns abholen.</div></article>
+<article class="card"><div class="thai">ขอบคุณสำหรับการซื้อบัตรกำนัลค่ะ/ครับ</div><div class="german">Vielen Dank für den Kauf eines Gutscheins.</div></article></div>
+</details>
+</section><section id="walkin" class="category">
+<details>
+<summary>Walk-in<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">สวัสดีค่ะ/ครับ ยินดีต้อนรับสู่ Dusita Thai Spa</div><div class="german">Herzlich willkommen bei Dusita Thai Spa.</div></article>
+<article class="card"><div class="thai">วันนี้ต้องการนวดแบบไหนคะ/ครับ</div><div class="german">Welche Massage möchten Sie heute gerne?</div></article>
+<article class="card"><div class="thai">กรุณารอสักครู่ เราจะตรวจสอบเวลาว่างให้ค่ะ/ครับ</div><div class="german">Einen Moment bitte, ich prüfe die Verfügbarkeit.</div></article>
+<article class="card"><div class="thai">ตอนนี้มีคิวว่างเวลา ...</div><div class="german">Der nächste freie Termin ist um ...</div></article>
+<article class="card"><div class="thai">คุณต้องการรอรับบริการไหมคะ/ครับ</div><div class="german">Möchten Sie auf diesen Termin warten?</div></article></div>
+</details>
+</section><section id="massage" class="category">
+<details>
+<summary>Massage<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">คุณต้องการนวดประเภทไหนคะ/ครับ</div><div class="german">Welche Massage möchten Sie gerne?</div></article>
+<article class="card"><div class="thai">คุณต้องการนวดไทยหรือนวดน้ำมันคะ/ครับ</div><div class="german">Möchten Sie eine Thai-Massage oder eine Ölmassage?</div></article>
+<article class="card"><div class="thai">คุณต้องการนวดแบบผ่อนคลายหรือแบบแรงขึ้นคะ/ครับ</div><div class="german">Möchten Sie eine entspannende oder eine kräftigere Massage?</div></article>
+<article class="card"><div class="thai">แรงกดที่ต้องการเป็นระดับไหนคะ/ครับ</div><div class="german">Welche Druckstärke wünschen Sie?</div></article>
+<article class="card"><div class="thai">เบา</div><div class="german">Leicht.</div></article>
+<article class="card"><div class="thai">ปานกลาง</div><div class="german">Mittel.</div></article>
+<article class="card"><div class="thai">แรง</div><div class="german">Stark.</div></article>
+<article class="card"><div class="thai">มีบริเวณไหนที่ต้องการเน้นเป็นพิเศษไหมคะ/ครับ</div><div class="german">Gibt es einen Bereich, auf den wir besonders achten sollen?</div></article>
+<article class="card"><div class="thai">มีบริเวณไหนที่ไม่ต้องการให้นวดไหมคะ/ครับ</div><div class="german">Gibt es Bereiche, die nicht massiert werden sollen?</div></article>
+<article class="card"><div class="thai">กรุณาแจ้งหากรู้สึกไม่สบายระหว่างการนวดค่ะ/ครับ</div><div class="german">Bitte informieren Sie uns, wenn Sie sich während der Massage unwohl fühlen.</div></article></div>
+</details>
+</section><section id="zahlung" class="category">
+<details>
+<summary>Zahlung<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">ยอดทั้งหมดคือ ... ฟรังก์สวิสค่ะ/ครับ</div><div class="german">Der Gesamtbetrag beträgt ... Schweizer Franken.</div></article>
+<article class="card"><div class="thai">คุณต้องการชำระด้วยบัตรหรือเงินสดคะ/ครับ</div><div class="german">Möchten Sie mit Karte oder bar bezahlen?</div></article>
+<article class="card"><div class="thai">กรุณาแตะบัตรที่เครื่องชำระเงินค่ะ/ครับ</div><div class="german">Bitte halten Sie Ihre Karte an das Zahlungsterminal.</div></article>
+<article class="card"><div class="thai">กรุณาใส่รหัส PIN ค่ะ/ครับ</div><div class="german">Bitte geben Sie Ihre PIN ein.</div></article>
+<article class="card"><div class="thai">การชำระเงินเรียบร้อยแล้วค่ะ/ครับ</div><div class="german">Die Zahlung wurde erfolgreich abgeschlossen.</div></article>
+<article class="card"><div class="thai">นี่คือใบเสร็จของคุณค่ะ/ครับ</div><div class="german">Hier ist Ihre Quittung.</div></article></div>
+</details>
+</section><section id="anfahrt" class="category">
+<details>
+<summary>Anfahrt<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">คุณสามารถเดินทางมาที่ร้านด้วยรถยนต์หรือขนส่งสาธารณะค่ะ/ครับ</div><div class="german">Sie können uns mit dem Auto oder mit öffentlichen Verkehrsmitteln erreichen.</div></article>
+<article class="card"><div class="thai">มีที่จอดรถใกล้ร้านค่ะ/ครับ</div><div class="german">Es gibt Parkmöglichkeiten in der Nähe.</div></article>
+<article class="card"><div class="thai">ต้องการให้เราส่งตำแหน่งร้านทาง WhatsApp ไหมคะ/ครับ</div><div class="german">Möchten Sie den Standort per WhatsApp erhalten?</div></article>
+<article class="card"><div class="thai">หากหาไม่เจอ สามารถโทรหาเราได้ค่ะ/ครับ</div><div class="german">Falls Sie uns nicht finden, können Sie uns gerne anrufen.</div></article></div>
+</details>
+</section><section id="kundenfragen" class="category">
+<details>
+<summary>Kundenfragen<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">ร้านเปิดกี่โมงคะ/ครับ</div><div class="german">Wann hat Dusita Thai Spa geöffnet?</div></article>
+<article class="card"><div class="thai">ต้องจองล่วงหน้าหรือไม่คะ/ครับ</div><div class="german">Muss ich im Voraus einen Termin buchen?</div></article>
+<article class="card"><div class="thai">สามารถเข้ามาโดยไม่จองได้ไหมคะ/ครับ</div><div class="german">Kann ich auch ohne Termin kommen?</div></article>
+<article class="card"><div class="thai">ใช้เวลานวดนานเท่าไหร่คะ/ครับ</div><div class="german">Wie lange dauert die Massage?</div></article>
+<article class="card"><div class="thai">มีบริการสำหรับสองคนไหมคะ/ครับ</div><div class="german">Bieten Sie Massagen für zwei Personen an?</div></article>
+<article class="card"><div class="thai">สามารถเปลี่ยนเวลานัดได้ไหมคะ/ครับ</div><div class="german">Kann ich meinen Termin ändern?</div></article>
+<article class="card"><div class="thai">สามารถยกเลิกการจองได้ไหมคะ/ครับ</div><div class="german">Kann ich den Termin stornieren?</div></article>
+<article class="card"><div class="thai">สามารถซื้อบัตรกำนัลได้ไหมคะ/ครับ</div><div class="german">Kann ich einen Gutschein kaufen?</div></article></div>
+</details>
+</section><section id="verabschiedung" class="category">
+<details>
+<summary>Verabschiedung<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">ขอบคุณที่มาใช้บริการ Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Vielen Dank für Ihren Besuch bei Dusita Thai Spa.</div></article>
+<article class="card"><div class="thai">หวังว่าคุณจะมีความสุขและผ่อนคลายกับการนวดค่ะ/ครับ</div><div class="german">Wir hoffen, dass Sie Ihre Massage genossen haben und sich entspannen konnten.</div></article>
+<article class="card"><div class="thai">ขอบคุณสำหรับความคิดเห็นของคุณค่ะ/ครับ</div><div class="german">Vielen Dank für Ihr Feedback.</div></article>
+<article class="card"><div class="thai">ขอให้คุณมีวันที่ดีค่ะ/ครับ</div><div class="german">Wir wünschen Ihnen einen schönen Tag.</div></article>
+<article class="card"><div class="thai">แล้วพบกันใหม่ค่ะ/ครับ</div><div class="german">Bis zum nächsten Mal.</div></article>
+<article class="card"><div class="thai">ลาก่อนค่ะ/ครับ</div><div class="german">Auf Wiedersehen.</div></article></div>
+</details>
+</section><section id="zahlen" class="category">
+<details>
+<summary>Zahlen<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">0 — ศูนย์</div><div class="german">Null</div></article>
+<article class="card"><div class="thai">1 — หนึ่ง</div><div class="german">Eins</div></article>
+<article class="card"><div class="thai">2 — สอง</div><div class="german">Zwei</div></article>
+<article class="card"><div class="thai">3 — สาม</div><div class="german">Drei</div></article>
+<article class="card"><div class="thai">4 — สี่</div><div class="german">Vier</div></article>
+<article class="card"><div class="thai">5 — ห้า</div><div class="german">Fünf</div></article>
+<article class="card"><div class="thai">6 — หก</div><div class="german">Sechs</div></article>
+<article class="card"><div class="thai">7 — เจ็ด</div><div class="german">Sieben</div></article>
+<article class="card"><div class="thai">8 — แปด</div><div class="german">Acht</div></article>
+<article class="card"><div class="thai">9 — เก้า</div><div class="german">Neun</div></article>
+<article class="card"><div class="thai">10 — สิบ</div><div class="german">Zehn</div></article>
+<article class="card"><div class="thai">20 — ยี่สิบ</div><div class="german">Zwanzig</div></article>
+<article class="card"><div class="thai">30 — สามสิบ</div><div class="german">Dreissig</div></article>
+<article class="card"><div class="thai">40 — สี่สิบ</div><div class="german">Vierzig</div></article>
+<article class="card"><div class="thai">50 — ห้าสิบ</div><div class="german">Fünfzig</div></article>
+<article class="card"><div class="thai">60 — หกสิบ</div><div class="german">Sechzig</div></article>
+<article class="card"><div class="thai">90 — เก้าสิบ</div><div class="german">Neunzig</div></article>
+<article class="card"><div class="thai">100 — หนึ่งร้อย</div><div class="german">Hundert</div></article></div>
+</details>
+</section><section id="buchstabieren" class="category">
+<details>
+<summary>Buchstabieren A–Z<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">A</div><div class="german">A wie Anton</div></article>
+<article class="card"><div class="thai">B</div><div class="german">B wie Berta</div></article>
+<article class="card"><div class="thai">C</div><div class="german">C wie Cäsar</div></article>
+<article class="card"><div class="thai">D</div><div class="german">D wie Dora</div></article>
+<article class="card"><div class="thai">E</div><div class="german">E wie Emil</div></article>
+<article class="card"><div class="thai">F</div><div class="german">F wie Friedrich</div></article>
+<article class="card"><div class="thai">G</div><div class="german">G wie Gustav</div></article>
+<article class="card"><div class="thai">H</div><div class="german">H wie Heinrich</div></article>
+<article class="card"><div class="thai">I</div><div class="german">I wie Ida</div></article>
+<article class="card"><div class="thai">J</div><div class="german">J wie Julius</div></article>
+<article class="card"><div class="thai">K</div><div class="german">K wie Kaufmann</div></article>
+<article class="card"><div class="thai">L</div><div class="german">L wie Ludwig</div></article>
+<article class="card"><div class="thai">M</div><div class="german">M wie Martha</div></article>
+<article class="card"><div class="thai">N</div><div class="german">N wie Nordpol</div></article>
+<article class="card"><div class="thai">O</div><div class="german">O wie Otto</div></article>
+<article class="card"><div class="thai">P</div><div class="german">P wie Paula</div></article>
+<article class="card"><div class="thai">Q</div><div class="german">Q wie Quelle</div></article>
+<article class="card"><div class="thai">R</div><div class="german">R wie Richard</div></article>
+<article class="card"><div class="thai">S</div><div class="german">S wie Samuel</div></article>
+<article class="card"><div class="thai">T</div><div class="german">T wie Theodor</div></article>
+<article class="card"><div class="thai">U</div><div class="german">U wie Ulrich</div></article>
+<article class="card"><div class="thai">V</div><div class="german">V wie Viktor</div></article>
+<article class="card"><div class="thai">W</div><div class="german">W wie Wilhelm</div></article>
+<article class="card"><div class="thai">X</div><div class="german">X wie Xaver</div></article>
+<article class="card"><div class="thai">Y</div><div class="german">Y wie Ypsilon</div></article>
+<article class="card"><div class="thai">Z</div><div class="german">Z wie Zacharias</div></article></div>
+</details>
+</section><section id="datum" class="category">
+<details>
+<summary>Datum & Uhrzeit<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">วันนี้</div><div class="german">Heute.</div></article>
+<article class="card"><div class="thai">พรุ่งนี้</div><div class="german">Morgen.</div></article>
+<article class="card"><div class="thai">วันจันทร์</div><div class="german">Montag.</div></article>
+<article class="card"><div class="thai">วันอังคาร</div><div class="german">Dienstag.</div></article>
+<article class="card"><div class="thai">วันพุธ</div><div class="german">Mittwoch.</div></article>
+<article class="card"><div class="thai">วันพฤหัสบดี</div><div class="german">Donnerstag.</div></article>
+<article class="card"><div class="thai">วันศุกร์</div><div class="german">Freitag.</div></article>
+<article class="card"><div class="thai">วันเสาร์</div><div class="german">Samstag.</div></article>
+<article class="card"><div class="thai">วันอาทิตย์</div><div class="german">Sonntag.</div></article>
+<article class="card"><div class="thai">นัดของคุณคือเวลา ...</div><div class="german">Ihr Termin ist um ...</div></article>
+<article class="card"><div class="thai">กรุณามาตรงเวลานะคะ/ครับ</div><div class="german">Bitte kommen Sie pünktlich.</div></article></div>
+</details>
+</section><section id="telefonnummer" class="category">
+<details>
+<summary>Telefonnummer<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">กรุณาบอกหมายเลขโทรศัพท์ของคุณค่ะ/ครับ</div><div class="german">Wie lautet Ihre Telefonnummer, bitte?</div></article>
+<article class="card"><div class="thai">ช่วยพูดหมายเลขช้า ๆ ได้ไหมคะ/ครับ</div><div class="german">Könnten Sie die Telefonnummer bitte langsam sagen?</div></article>
+<article class="card"><div class="thai">ฉันขอทวนหมายเลขโทรศัพท์อีกครั้งค่ะ/ครับ</div><div class="german">Ich wiederhole die Telefonnummer noch einmal.</div></article>
+<article class="card"><div class="thai">รหัสประเทศสวิตเซอร์แลนด์คือ +41</div><div class="german">Die Landesvorwahl der Schweiz ist +41.</div></article></div>
+</details>
+</section><section id="whatsapp" class="category">
+<details>
+<summary>WhatsApp / E-Mail<span aria-hidden="true">＋</span></summary>
+<div class="content"><article class="card"><div class="thai">คุณต้องการให้เราติดต่อผ่าน WhatsApp หรืออีเมลไหมคะ/ครับ</div><div class="german">Möchten Sie, dass wir Sie per WhatsApp oder E-Mail kontaktieren?</div></article>
+<article class="card"><div class="thai">กรุณาแจ้งหมายเลข WhatsApp ของคุณค่ะ/ครับ</div><div class="german">Bitte teilen Sie uns Ihre WhatsApp-Nummer mit.</div></article>
+<article class="card"><div class="thai">กรุณาแจ้งอีเมลของคุณค่ะ/ครับ</div><div class="german">Bitte geben Sie Ihre E-Mail-Adresse an.</div></article>
+<article class="card"><div class="thai">กรุณาสะกดอีเมลทีละตัวอักษรค่ะ/ครับ</div><div class="german">Bitte buchstabieren Sie die E-Mail-Adresse Buchstabe für Buchstabe.</div></article>
+<article class="card"><div class="thai">เราได้ส่งข้อมูลเรียบร้อยแล้วค่ะ/ครับ</div><div class="german">Wir haben die Informationen gesendet.</div></article></div>
+</details>
+</section>
+</main>
+
+<a class="home" href="#home" aria-label="Back to Quick Menu">⌂</a>
+<footer>Jazz Assistant · Dusita Thai Spa · Offline ready</footer>
+
+<script>
+const input = document.getElementById('searchInput');
+const clearButton = document.getElementById('clearButton');
+const cards = [...document.querySelectorAll('.card')];
+const categories = [...document.querySelectorAll('.category')];
+const noResults = document.getElementById('noResults');
+
+function filterCards() {
+  const term = input.value.trim().toLocaleLowerCase();
+  let totalVisible = 0;
+  categories.forEach(section => {
+    let sectionVisible = 0;
+    section.querySelectorAll('.card').forEach(card => {
+      const visible = !term || card.textContent.toLocaleLowerCase().includes(term);
+      card.hidden = !visible;
+      if (visible) sectionVisible++;
+    });
+    section.hidden = sectionVisible === 0;
+    if (term && sectionVisible > 0) section.querySelector('details').open = true;
+    totalVisible += sectionVisible;
+  });
+  noResults.style.display = totalVisible ? 'none' : 'block';
+}
+input.addEventListener('input', filterCards);
+clearButton.addEventListener('click', () => {
+  input.value = '';
+  filterCards();
+  input.focus();
+});
+
+document.querySelectorAll('.menu-grid a').forEach(link => {
+  link.addEventListener('click', () => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.querySelector('details').open = true;
+  });
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+}
+</script>
+</body>
+</html>
