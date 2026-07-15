@@ -1,15 +1,32 @@
 {
   "id": "./",
-  "name": "Jazz Assistant",
-  "short_name": "Jazz",
-  "description": "Thai–German work assistant for Dusita Thai Spa",
+  "name": "Dusita Telefonhilfe",
+  "short_name": "Dusita Telefon",
+  "description": "Geführte Thai–deutsche Telefonhilfe für Dusita Thai Spa",
   "lang": "th",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f4f6f5",
-  "theme_color": "#00695c",
-  "orientation": "any",
+  "background_color": "#f7f4ee",
+  "theme_color": "#183f39",
+  "orientation": "portrait-primary",
+  "shortcuts": [
+    {
+      "name": "Termin buchen",
+      "short_name": "Buchen",
+      "url": "./index.html?flow=booking"
+    },
+    {
+      "name": "Termin absagen",
+      "short_name": "Absagen",
+      "url": "./index.html?flow=cancel"
+    },
+    {
+      "name": "Termin verschieben",
+      "short_name": "Verschieben",
+      "url": "./index.html?flow=move"
+    }
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",

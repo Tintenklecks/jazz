@@ -1,305 +1,1031 @@
 <!doctype html>
 <html lang="th">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#00695c">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Jazz Assistant">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icons/icon-180.png">
-<title>Jazz Assistant</title>
-<style>
-:root{--green:#00695c;--green2:#00897b;--mint:#e0f2f1;--paper:#f4f6f5;--ink:#1f2927;--muted:#54635f}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Thai",Arial,sans-serif;font-size:21px;line-height:1.55}
-header{position:sticky;top:0;z-index:10;padding:calc(16px + env(safe-area-inset-top)) 18px 18px;background:var(--green);color:white;box-shadow:0 3px 14px #0003}
-header h1{margin:0 0 4px;font-size:31px}
-header p{margin:0 0 14px;font-size:18px}
-.search-wrap{display:flex;gap:8px;max-width:900px;margin:auto}
-input{width:100%;border:0;border-radius:14px;padding:15px 16px;font-size:21px;box-shadow:inset 0 0 0 1px #0001}
-button{border:0;border-radius:14px;padding:12px 16px;font-size:18px;background:white;color:var(--green);font-weight:700}
-main,.quick-menu{max-width:980px;margin:18px auto;padding:0 16px}
-.quick-menu{background:white;border-radius:20px;padding:20px;box-shadow:0 2px 12px #00000012}
-.quick-menu h2{margin:0 0 14px;font-size:27px}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px}
-.menu-grid a{display:flex;align-items:center;justify-content:center;min-height:60px;padding:12px;border-radius:14px;background:var(--green2);color:white;text-decoration:none;text-align:center;font-weight:700}
-.category{scroll-margin-top:165px;margin:0 0 15px}
-details{background:white;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px #00000012}
-summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;padding:19px 20px;background:var(--mint);font-size:26px;font-weight:800}
-summary::-webkit-details-marker{display:none}
-details[open] summary span{transform:rotate(45deg)}
-summary span{font-size:30px;transition:.2s}
-.content{padding:18px}
-.card{margin:0 0 14px;padding:17px 18px;border-left:7px solid var(--green2);border-radius:12px;background:#fbfcfc}
-.thai{font-size:24px;font-weight:750}
-.german{margin-top:7px;font-size:22px;color:#374640}
-.home{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));width:64px;height:64px;display:grid;place-items:center;border-radius:50%;background:var(--green);color:white;text-decoration:none;font-size:30px;box-shadow:0 5px 18px #0005}
-.no-results{display:none;max-width:980px;margin:18px auto;padding:20px;text-align:center;background:white;border-radius:16px}
-footer{padding:24px 20px calc(24px + env(safe-area-inset-bottom));text-align:center;color:var(--muted);font-size:16px}
-@media(max-width:600px){body{font-size:19px}header h1{font-size:27px}header p{font-size:16px}summary{font-size:23px}.thai{font-size:22px}.german{font-size:20px}.menu-grid{grid-template-columns:1fr 1fr}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#183f39">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Dusita Telefon">
+  <meta name="description" content="Thai-deutsche Telefonhilfe für Dusita Thai Spa">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <title>Dusita Telefonhilfe</title>
+  <style>
+    :root {
+      --ink: #18302c;
+      --muted: #667570;
+      --paper: #f7f4ee;
+      --surface: #fffdf9;
+      --line: #dedbd3;
+      --brand: #183f39;
+      --brand-soft: #e7efec;
+      --booking: #167a72;
+      --booking-soft: #e0f3f0;
+      --cancel: #c75a50;
+      --cancel-soft: #fae9e6;
+      --move: #6d5aa7;
+      --move-soft: #eee9f8;
+      --help: #d58d21;
+      --help-soft: #fff2da;
+      --shadow: 0 18px 50px rgba(31, 49, 44, .09);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 8% -10%, rgba(31, 127, 117, .12), transparent 28rem),
+        var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", sans-serif;
+      line-height: 1.48;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+      outline: 3px solid rgba(28, 124, 114, .28);
+      outline-offset: 3px;
+    }
+
+    .app-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 72px;
+      padding: calc(12px + env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 12px max(18px, env(safe-area-inset-left));
+      background: rgba(247, 244, 238, .9);
+      border-bottom: 1px solid rgba(24, 48, 44, .08);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 14px;
+      background: var(--brand);
+      color: white;
+      font-family: Georgia, serif;
+      font-size: 25px;
+      box-shadow: 0 7px 18px rgba(24, 63, 57, .2);
+    }
+    .brand strong { display: block; font-size: 17px; line-height: 1.15; }
+    .brand span { display: block; color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .status { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 13px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3e9c69; box-shadow: 0 0 0 4px #dcefe4; }
+    .status.is-offline .status-dot { background: var(--help); box-shadow: 0 0 0 4px var(--help-soft); }
+
+    main { width: min(100% - 32px, 940px); margin: 0 auto; padding: 42px 0 calc(120px + env(safe-area-inset-bottom)); }
+    [hidden] { display: none !important; }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--booking);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0; max-width: 700px; font-size: clamp(34px, 6vw, 58px); line-height: 1.06; letter-spacing: -.035em; }
+    .intro { max-width: 650px; margin: 16px 0 30px; color: var(--muted); font-size: clamp(17px, 2.6vw, 20px); }
+
+    .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .flow-card {
+      position: relative;
+      min-height: 265px;
+      padding: 24px;
+      overflow: hidden;
+      border: 0;
+      border-radius: var(--radius);
+      color: white;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .flow-card:hover { transform: translateY(-4px); box-shadow: 0 22px 55px rgba(31, 49, 44, .16); }
+    .flow-card:active { transform: scale(.985); }
+    .flow-card::after {
+      content: "";
+      position: absolute;
+      right: -38px;
+      bottom: -50px;
+      width: 160px;
+      height: 160px;
+      border: 26px solid rgba(255,255,255,.1);
+      border-radius: 50%;
+    }
+    .flow-card.booking { background: var(--booking); }
+    .flow-card.cancel { background: var(--cancel); }
+    .flow-card.move { background: var(--move); }
+    .flow-number { display: block; margin-bottom: 42px; font-size: 13px; font-weight: 800; letter-spacing: .08em; opacity: .8; }
+    .flow-icon { display: block; margin-bottom: 12px; font-size: 27px; }
+    .flow-card strong { display: block; font-size: 25px; line-height: 1.15; }
+    .flow-card small { display: block; margin-top: 8px; font-size: 16px; font-weight: 600; opacity: .84; }
+    .flow-arrow { position: absolute; right: 22px; top: 22px; font-size: 23px; }
+
+    .home-help {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 18px;
+      padding: 20px 22px;
+      border: 1px solid #ead7b7;
+      border-radius: 20px;
+      background: var(--help-soft);
+    }
+    .home-help strong { display: block; font-size: 18px; }
+    .home-help p { margin: 3px 0 0; color: #7a6035; font-size: 14px; }
+
+    .secondary-btn, .icon-btn, .back-btn, .utility-btn, .nav-btn, .choice, .install-btn {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--ink);
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .secondary-btn { flex: 0 0 auto; padding: 12px 16px; border-color: #dfc797; background: #fffaf0; }
+    .install-btn { margin-top: 22px; padding: 12px 17px; }
+
+    .call-top { margin-bottom: 24px; }
+    .call-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .back-btn { width: 46px; height: 46px; padding: 0; font-size: 23px; }
+    .flow-badge { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 800; }
+    .flow-badge.booking { color: var(--booking); background: var(--booking-soft); }
+    .flow-badge.cancel { color: var(--cancel); background: var(--cancel-soft); }
+    .flow-badge.move { color: var(--move); background: var(--move-soft); }
+    .step-count { margin-left: auto; color: var(--muted); font-size: 14px; font-weight: 700; }
+    .progress-track { height: 7px; overflow: hidden; border-radius: 999px; background: #e5e1d9; }
+    .progress-bar { width: 0; height: 100%; border-radius: inherit; transition: width .32s ease; }
+    .call-screen.booking .progress-bar { background: var(--booking); }
+    .call-screen.cancel .progress-bar { background: var(--cancel); }
+    .call-screen.move .progress-bar { background: var(--move); }
+
+    .conversation-layout { display: grid; grid-template-columns: minmax(0, 1.32fr) minmax(270px, .68fr); gap: 20px; align-items: start; }
+    .conversation-layout:has(.input-panel[hidden]) { grid-template-columns: 1fr; }
+    .conversation-main, .input-panel {
+      border: 1px solid rgba(24,48,44,.09);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .conversation-main { overflow: hidden; }
+    .step-header { padding: 24px 26px 0; }
+    .step-kicker { margin: 0 0 5px; color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .step-title { margin: 0; font-size: clamp(25px, 4vw, 34px); line-height: 1.18; letter-spacing: -.02em; }
+
+    .phrase-list { display: grid; gap: 12px; padding: 22px 24px 24px; }
+    .phrase-card { position: relative; padding: 20px 68px 20px 20px; border-radius: 18px; background: var(--brand-soft); }
+    .call-screen.booking .phrase-card { background: var(--booking-soft); }
+    .call-screen.cancel .phrase-card { background: var(--cancel-soft); }
+    .call-screen.move .phrase-card { background: var(--move-soft); }
+    .phrase-card.is-note { background: #f1f0ec !important; }
+    .thai-label { margin: 0 0 8px; color: var(--muted); font-size: 16px; font-weight: 650; }
+    .german-phrase { margin: 0; font-size: clamp(22px, 3.3vw, 29px); font-weight: 800; line-height: 1.35; letter-spacing: -.015em; white-space: pre-line; }
+    .speak-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.76);
+      color: var(--ink);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .speak-btn.is-speaking { animation: pulse 1s infinite; }
+    @keyframes pulse { 50% { transform: scale(1.08); box-shadow: 0 0 0 6px rgba(255,255,255,.4); } }
+    .step-tip { margin: 0 24px 24px; padding: 13px 15px; border-left: 4px solid var(--help); border-radius: 10px; background: var(--help-soft); color: #694d21; font-size: 14px; }
+
+    .input-panel { padding: 22px; }
+    .input-panel h3 { margin: 0 0 4px; font-size: 18px; }
+    .input-panel > p { margin: 0 0 17px; color: var(--muted); font-size: 14px; }
+    .field { display: block; margin-bottom: 15px; }
+    .field > span, .choice-label { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 750; }
+    .field input, .field select {
+      width: 100%;
+      min-height: 50px;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+      color: var(--ink);
+      font-size: 16px;
+    }
+    .choice-group { display: grid; gap: 8px; margin-bottom: 16px; }
+    .choice { width: 100%; padding: 12px 13px; text-align: left; }
+    .choice small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .choice.is-selected { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
+    .call-screen.booking .choice.is-selected { color: var(--booking); background: var(--booking-soft); }
+    .call-screen.cancel .choice.is-selected { color: var(--cancel); background: var(--cancel-soft); }
+    .call-screen.move .choice.is-selected { color: var(--move); background: var(--move-soft); }
+    .empty-input { padding: 18px 14px; border-radius: 14px; background: #f3f1ec; color: var(--muted); font-size: 14px; text-align: center; }
+
+    .conversation-nav { display: flex; gap: 12px; margin-top: 18px; }
+    .nav-btn { min-height: 54px; padding: 12px 20px; }
+    .nav-btn.primary { flex: 1; border-color: transparent; color: white; }
+    .call-screen.booking .nav-btn.primary { background: var(--booking); }
+    .call-screen.cancel .nav-btn.primary { background: var(--cancel); }
+    .call-screen.move .nav-btn.primary { background: var(--move); }
+    .nav-btn:disabled { cursor: not-allowed; opacity: .45; }
+
+    .utility-bar {
+      position: fixed;
+      left: 50%;
+      bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 18;
+      display: flex;
+      gap: 8px;
+      width: min(calc(100% - 28px), 610px);
+      padding: 9px;
+      transform: translateX(-50%);
+      border: 1px solid rgba(24,48,44,.12);
+      border-radius: 20px;
+      background: rgba(255,253,249,.94);
+      box-shadow: 0 14px 45px rgba(24,48,44,.18);
+      backdrop-filter: blur(18px);
+    }
+    .utility-btn { flex: 1; min-height: 48px; padding: 8px 9px; border: 0; background: transparent; font-size: 13px; }
+    .utility-btn.help { background: var(--help-soft); color: #765317; }
+    .utility-btn span { display: block; margin-bottom: 1px; font-size: 17px; }
+
+    dialog {
+      width: min(calc(100% - 24px), 720px);
+      max-height: min(88vh, 850px);
+      margin: auto;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 26px;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 30px 100px rgba(16, 38, 34, .3);
+    }
+    dialog::backdrop { background: rgba(17, 38, 34, .52); backdrop-filter: blur(5px); }
+    .dialog-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--line); background: var(--surface); }
+    .dialog-head h2 { margin: 0; font-size: 22px; }
+    .dialog-head p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+    .icon-btn { width: 44px; height: 44px; margin-left: auto; padding: 0; font-size: 21px; }
+    .dialog-content { padding: 18px 20px 28px; overflow: auto; max-height: calc(88vh - 81px); }
+    .help-section { margin-bottom: 12px; overflow: hidden; border: 1px solid var(--line); border-radius: 17px; background: white; }
+    .help-section summary { padding: 15px 16px; cursor: pointer; list-style: none; font-weight: 800; }
+    .help-section summary::-webkit-details-marker { display: none; }
+    .help-cards { display: grid; gap: 9px; padding: 0 12px 12px; }
+    .help-card { position: relative; padding: 13px 56px 13px 14px; border-radius: 13px; background: #f3f1ec; }
+    .help-card .thai-label { margin-bottom: 4px; font-size: 14px; }
+    .help-card .german-phrase { font-size: 18px; }
+    .help-card .speak-btn { top: 11px; right: 10px; width: 38px; height: 38px; }
+    .alphabet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .alphabet-grid span { padding: 7px; border-radius: 8px; background: #f3f1ec; font-size: 13px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 96px;
+      z-index: 50;
+      padding: 11px 15px;
+      transform: translate(-50%, 15px);
+      border-radius: 999px;
+      background: var(--brand);
+      color: white;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s ease;
+    }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+    @media (max-width: 760px) {
+      main { width: min(100% - 24px, 620px); padding-top: 26px; }
+      .flow-grid { grid-template-columns: 1fr; }
+      .flow-card { min-height: 178px; }
+      .flow-number { margin-bottom: 18px; }
+      .conversation-layout { grid-template-columns: 1fr; }
+      .conversation-main { order: 1; }
+      .input-panel { order: 2; }
+      .conversation-nav { order: 3; }
+      .home-help { align-items: flex-start; flex-direction: column; }
+      .secondary-btn { width: 100%; }
+    }
+    @media (max-width: 430px) {
+      .status span:last-child { display: none; }
+      .brand span { max-width: 190px; overflow: hidden; text-overflow: ellipsis; }
+      .step-header { padding: 20px 20px 0; }
+      .phrase-list { padding: 18px; }
+      .phrase-card { padding: 17px 58px 17px 17px; }
+      .step-tip { margin: 0 18px 18px; }
+      .input-panel { padding: 18px; }
+      .utility-btn { font-size: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
 <body>
-<header id="home">
-<h1>Jazz Assistant</h1>
-<p>คู่มือภาษาเยอรมันสำหรับการทำงานที่ Dusita Thai Spa</p>
-<div class="search-wrap">
-<input id="searchInput" type="search" inputmode="search" placeholder="ค้นหาไทยหรือเยอรมัน…" aria-label="Search">
-<button id="clearButton" type="button">Clear</button>
-</div>
-</header>
+  <header class="app-bar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">D</div>
+      <div><strong>Dusita Telefonhilfe</strong><span>คู่มือสนทนาทางโทรศัพท์</span></div>
+    </div>
+    <div class="status" id="connectionStatus"><i class="status-dot" aria-hidden="true"></i><span id="connectionText">Bereit</span></div>
+  </header>
 
-<nav class="quick-menu" aria-label="Quick Menu">
-<h2>Quick Menu</h2>
-<div class="menu-grid"><a href="#telefon">Telefon</a>
-<a href="#termin">Termin</a>
-<a href="#gutschein">Gutschein</a>
-<a href="#walkin">Walk-in</a>
-<a href="#massage">Massage</a>
-<a href="#zahlung">Zahlung</a>
-<a href="#anfahrt">Anfahrt</a>
-<a href="#kundenfragen">Kundenfragen</a>
-<a href="#verabschiedung">Verabschiedung</a>
-<a href="#zahlen">Zahlen</a>
-<a href="#buchstabieren">Buchstabieren A–Z</a>
-<a href="#datum">Datum & Uhrzeit</a>
-<a href="#telefonnummer">Telefonnummer</a>
-<a href="#whatsapp">WhatsApp / E-Mail</a></div>
-</nav>
+  <main>
+    <section id="homeScreen" aria-labelledby="homeTitle">
+      <p class="eyebrow">สวัสดี Jazz · Guten Tag</p>
+      <h1 id="homeTitle">Was möchte der Kunde?</h1>
+      <p class="intro">เลือกสถานการณ์ แล้วทำตามทีละขั้นตอน<br>Situation wählen und Schritt für Schritt durch das Gespräch gehen.</p>
 
-<div id="noResults" class="no-results">ไม่พบข้อความ / Keine Ergebnisse gefunden.</div>
-<main>
-<section id="telefon" class="category">
-<details>
-<summary>Telefon<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">สวัสดีค่ะ/ครับ ที่นี่ Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Guten Tag, hier ist Dusita Thai Spa.</div></article>
-<article class="card"><div class="thai">ขอบคุณที่โทรหา Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Vielen Dank für Ihren Anruf bei Dusita Thai Spa.</div></article>
-<article class="card"><div class="thai">ฉันสามารถช่วยอะไรคุณได้บ้างคะ/ครับ</div><div class="german">Wie kann ich Ihnen helfen?</div></article>
-<article class="card"><div class="thai">คุณต้องการจองนวดหรือสอบถามข้อมูลเพิ่มเติมคะ/ครับ</div><div class="german">Möchten Sie einen Massagetermin buchen oder benötigen Sie weitere Informationen?</div></article>
-<article class="card"><div class="thai">กรุณารอสักครู่นะคะ/ครับ</div><div class="german">Einen Moment bitte.</div></article>
-<article class="card"><div class="thai">ขออภัยค่ะ/ครับ ช่วยพูดช้าลงได้ไหมคะ/ครับ</div><div class="german">Entschuldigung, könnten Sie bitte langsamer sprechen?</div></article>
-<article class="card"><div class="thai">ช่วยพูดอีกครั้งได้ไหมคะ/ครับ</div><div class="german">Könnten Sie das bitte noch einmal wiederholen?</div></article>
-<article class="card"><div class="thai">ฉันขอจดข้อมูลก่อนนะคะ/ครับ</div><div class="german">Ich notiere die Informationen kurz.</div></article></div>
-</details>
-</section><section id="termin" class="category">
-<details>
-<summary>Termin<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">ต้องการจองวันไหนและเวลาไหนคะ/ครับ</div><div class="german">Für welchen Tag und welche Uhrzeit möchten Sie einen Termin buchen?</div></article>
-<article class="card"><div class="thai">คุณต้องการนวดประเภทไหนคะ/ครับ</div><div class="german">Welche Massage möchten Sie gerne buchen?</div></article>
-<article class="card"><div class="thai">คุณต้องการจองสำหรับกี่ท่านคะ/ครับ</div><div class="german">Für wie viele Personen möchten Sie einen Termin buchen?</div></article>
-<article class="card"><div class="thai">ขอทราบชื่อของคุณสำหรับการจองค่ะ/ครับ</div><div class="german">Darf ich bitte Ihren Namen für die Buchung haben?</div></article>
-<article class="card"><div class="thai">กรุณาแจ้งหมายเลขโทรศัพท์ของคุณค่ะ/ครับ</div><div class="german">Bitte geben Sie mir Ihre Telefonnummer.</div></article>
-<article class="card"><div class="thai">ขอเช็กตารางเวลาสักครู่นะคะ/ครับ</div><div class="german">Ich überprüfe kurz den Terminplan.</div></article>
-<article class="card"><div class="thai">เวลานี้เต็มแล้วค่ะ/ครับ</div><div class="german">Dieser Termin ist leider schon ausgebucht.</div></article>
-<article class="card"><div class="thai">เรามีเวลาอื่นให้เลือกค่ะ/ครับ</div><div class="german">Wir können Ihnen eine andere Zeit anbieten.</div></article>
-<article class="card"><div class="thai">การจองของคุณได้รับการยืนยันแล้วค่ะ/ครับ</div><div class="german">Ihr Termin ist bestätigt.</div></article>
-<article class="card"><div class="thai">กรุณามาถึงก่อนเวลานัดประมาณ 5–10 นาทีค่ะ/ครับ</div><div class="german">Bitte kommen Sie etwa 5–10 Minuten vor Ihrem Termin.</div></article></div>
-</details>
-</section><section id="gutschein" class="category">
-<details>
-<summary>Gutschein<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">คุณสนใจซื้อบัตรกำนัลของ Dusita Thai Spa ไหมคะ/ครับ</div><div class="german">Möchten Sie einen Gutschein von Dusita Thai Spa kaufen?</div></article>
-<article class="card"><div class="thai">คุณต้องการบัตรกำนัลมูลค่าเท่าไหร่คะ/ครับ</div><div class="german">Welchen Wert soll der Gutschein haben?</div></article>
-<article class="card"><div class="thai">บัตรกำนัลสามารถใช้ได้ที่ Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Der Gutschein kann bei Dusita Thai Spa eingelöst werden.</div></article>
-<article class="card"><div class="thai">สามารถมารับบัตรกำนัลที่ร้านได้ค่ะ/ครับ</div><div class="german">Sie können den Gutschein direkt bei uns abholen.</div></article>
-<article class="card"><div class="thai">ขอบคุณสำหรับการซื้อบัตรกำนัลค่ะ/ครับ</div><div class="german">Vielen Dank für den Kauf eines Gutscheins.</div></article></div>
-</details>
-</section><section id="walkin" class="category">
-<details>
-<summary>Walk-in<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">สวัสดีค่ะ/ครับ ยินดีต้อนรับสู่ Dusita Thai Spa</div><div class="german">Herzlich willkommen bei Dusita Thai Spa.</div></article>
-<article class="card"><div class="thai">วันนี้ต้องการนวดแบบไหนคะ/ครับ</div><div class="german">Welche Massage möchten Sie heute gerne?</div></article>
-<article class="card"><div class="thai">กรุณารอสักครู่ เราจะตรวจสอบเวลาว่างให้ค่ะ/ครับ</div><div class="german">Einen Moment bitte, ich prüfe die Verfügbarkeit.</div></article>
-<article class="card"><div class="thai">ตอนนี้มีคิวว่างเวลา ...</div><div class="german">Der nächste freie Termin ist um ...</div></article>
-<article class="card"><div class="thai">คุณต้องการรอรับบริการไหมคะ/ครับ</div><div class="german">Möchten Sie auf diesen Termin warten?</div></article></div>
-</details>
-</section><section id="massage" class="category">
-<details>
-<summary>Massage<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">คุณต้องการนวดประเภทไหนคะ/ครับ</div><div class="german">Welche Massage möchten Sie gerne?</div></article>
-<article class="card"><div class="thai">คุณต้องการนวดไทยหรือนวดน้ำมันคะ/ครับ</div><div class="german">Möchten Sie eine Thai-Massage oder eine Ölmassage?</div></article>
-<article class="card"><div class="thai">คุณต้องการนวดแบบผ่อนคลายหรือแบบแรงขึ้นคะ/ครับ</div><div class="german">Möchten Sie eine entspannende oder eine kräftigere Massage?</div></article>
-<article class="card"><div class="thai">แรงกดที่ต้องการเป็นระดับไหนคะ/ครับ</div><div class="german">Welche Druckstärke wünschen Sie?</div></article>
-<article class="card"><div class="thai">เบา</div><div class="german">Leicht.</div></article>
-<article class="card"><div class="thai">ปานกลาง</div><div class="german">Mittel.</div></article>
-<article class="card"><div class="thai">แรง</div><div class="german">Stark.</div></article>
-<article class="card"><div class="thai">มีบริเวณไหนที่ต้องการเน้นเป็นพิเศษไหมคะ/ครับ</div><div class="german">Gibt es einen Bereich, auf den wir besonders achten sollen?</div></article>
-<article class="card"><div class="thai">มีบริเวณไหนที่ไม่ต้องการให้นวดไหมคะ/ครับ</div><div class="german">Gibt es Bereiche, die nicht massiert werden sollen?</div></article>
-<article class="card"><div class="thai">กรุณาแจ้งหากรู้สึกไม่สบายระหว่างการนวดค่ะ/ครับ</div><div class="german">Bitte informieren Sie uns, wenn Sie sich während der Massage unwohl fühlen.</div></article></div>
-</details>
-</section><section id="zahlung" class="category">
-<details>
-<summary>Zahlung<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">ยอดทั้งหมดคือ ... ฟรังก์สวิสค่ะ/ครับ</div><div class="german">Der Gesamtbetrag beträgt ... Schweizer Franken.</div></article>
-<article class="card"><div class="thai">คุณต้องการชำระด้วยบัตรหรือเงินสดคะ/ครับ</div><div class="german">Möchten Sie mit Karte oder bar bezahlen?</div></article>
-<article class="card"><div class="thai">กรุณาแตะบัตรที่เครื่องชำระเงินค่ะ/ครับ</div><div class="german">Bitte halten Sie Ihre Karte an das Zahlungsterminal.</div></article>
-<article class="card"><div class="thai">กรุณาใส่รหัส PIN ค่ะ/ครับ</div><div class="german">Bitte geben Sie Ihre PIN ein.</div></article>
-<article class="card"><div class="thai">การชำระเงินเรียบร้อยแล้วค่ะ/ครับ</div><div class="german">Die Zahlung wurde erfolgreich abgeschlossen.</div></article>
-<article class="card"><div class="thai">นี่คือใบเสร็จของคุณค่ะ/ครับ</div><div class="german">Hier ist Ihre Quittung.</div></article></div>
-</details>
-</section><section id="anfahrt" class="category">
-<details>
-<summary>Anfahrt<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">คุณสามารถเดินทางมาที่ร้านด้วยรถยนต์หรือขนส่งสาธารณะค่ะ/ครับ</div><div class="german">Sie können uns mit dem Auto oder mit öffentlichen Verkehrsmitteln erreichen.</div></article>
-<article class="card"><div class="thai">มีที่จอดรถใกล้ร้านค่ะ/ครับ</div><div class="german">Es gibt Parkmöglichkeiten in der Nähe.</div></article>
-<article class="card"><div class="thai">ต้องการให้เราส่งตำแหน่งร้านทาง WhatsApp ไหมคะ/ครับ</div><div class="german">Möchten Sie den Standort per WhatsApp erhalten?</div></article>
-<article class="card"><div class="thai">หากหาไม่เจอ สามารถโทรหาเราได้ค่ะ/ครับ</div><div class="german">Falls Sie uns nicht finden, können Sie uns gerne anrufen.</div></article></div>
-</details>
-</section><section id="kundenfragen" class="category">
-<details>
-<summary>Kundenfragen<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">ร้านเปิดกี่โมงคะ/ครับ</div><div class="german">Wann hat Dusita Thai Spa geöffnet?</div></article>
-<article class="card"><div class="thai">ต้องจองล่วงหน้าหรือไม่คะ/ครับ</div><div class="german">Muss ich im Voraus einen Termin buchen?</div></article>
-<article class="card"><div class="thai">สามารถเข้ามาโดยไม่จองได้ไหมคะ/ครับ</div><div class="german">Kann ich auch ohne Termin kommen?</div></article>
-<article class="card"><div class="thai">ใช้เวลานวดนานเท่าไหร่คะ/ครับ</div><div class="german">Wie lange dauert die Massage?</div></article>
-<article class="card"><div class="thai">มีบริการสำหรับสองคนไหมคะ/ครับ</div><div class="german">Bieten Sie Massagen für zwei Personen an?</div></article>
-<article class="card"><div class="thai">สามารถเปลี่ยนเวลานัดได้ไหมคะ/ครับ</div><div class="german">Kann ich meinen Termin ändern?</div></article>
-<article class="card"><div class="thai">สามารถยกเลิกการจองได้ไหมคะ/ครับ</div><div class="german">Kann ich den Termin stornieren?</div></article>
-<article class="card"><div class="thai">สามารถซื้อบัตรกำนัลได้ไหมคะ/ครับ</div><div class="german">Kann ich einen Gutschein kaufen?</div></article></div>
-</details>
-</section><section id="verabschiedung" class="category">
-<details>
-<summary>Verabschiedung<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">ขอบคุณที่มาใช้บริการ Dusita Thai Spa ค่ะ/ครับ</div><div class="german">Vielen Dank für Ihren Besuch bei Dusita Thai Spa.</div></article>
-<article class="card"><div class="thai">หวังว่าคุณจะมีความสุขและผ่อนคลายกับการนวดค่ะ/ครับ</div><div class="german">Wir hoffen, dass Sie Ihre Massage genossen haben und sich entspannen konnten.</div></article>
-<article class="card"><div class="thai">ขอบคุณสำหรับความคิดเห็นของคุณค่ะ/ครับ</div><div class="german">Vielen Dank für Ihr Feedback.</div></article>
-<article class="card"><div class="thai">ขอให้คุณมีวันที่ดีค่ะ/ครับ</div><div class="german">Wir wünschen Ihnen einen schönen Tag.</div></article>
-<article class="card"><div class="thai">แล้วพบกันใหม่ค่ะ/ครับ</div><div class="german">Bis zum nächsten Mal.</div></article>
-<article class="card"><div class="thai">ลาก่อนค่ะ/ครับ</div><div class="german">Auf Wiedersehen.</div></article></div>
-</details>
-</section><section id="zahlen" class="category">
-<details>
-<summary>Zahlen<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">0 — ศูนย์</div><div class="german">Null</div></article>
-<article class="card"><div class="thai">1 — หนึ่ง</div><div class="german">Eins</div></article>
-<article class="card"><div class="thai">2 — สอง</div><div class="german">Zwei</div></article>
-<article class="card"><div class="thai">3 — สาม</div><div class="german">Drei</div></article>
-<article class="card"><div class="thai">4 — สี่</div><div class="german">Vier</div></article>
-<article class="card"><div class="thai">5 — ห้า</div><div class="german">Fünf</div></article>
-<article class="card"><div class="thai">6 — หก</div><div class="german">Sechs</div></article>
-<article class="card"><div class="thai">7 — เจ็ด</div><div class="german">Sieben</div></article>
-<article class="card"><div class="thai">8 — แปด</div><div class="german">Acht</div></article>
-<article class="card"><div class="thai">9 — เก้า</div><div class="german">Neun</div></article>
-<article class="card"><div class="thai">10 — สิบ</div><div class="german">Zehn</div></article>
-<article class="card"><div class="thai">20 — ยี่สิบ</div><div class="german">Zwanzig</div></article>
-<article class="card"><div class="thai">30 — สามสิบ</div><div class="german">Dreissig</div></article>
-<article class="card"><div class="thai">40 — สี่สิบ</div><div class="german">Vierzig</div></article>
-<article class="card"><div class="thai">50 — ห้าสิบ</div><div class="german">Fünfzig</div></article>
-<article class="card"><div class="thai">60 — หกสิบ</div><div class="german">Sechzig</div></article>
-<article class="card"><div class="thai">90 — เก้าสิบ</div><div class="german">Neunzig</div></article>
-<article class="card"><div class="thai">100 — หนึ่งร้อย</div><div class="german">Hundert</div></article></div>
-</details>
-</section><section id="buchstabieren" class="category">
-<details>
-<summary>Buchstabieren A–Z<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">A</div><div class="german">A wie Anton</div></article>
-<article class="card"><div class="thai">B</div><div class="german">B wie Berta</div></article>
-<article class="card"><div class="thai">C</div><div class="german">C wie Cäsar</div></article>
-<article class="card"><div class="thai">D</div><div class="german">D wie Dora</div></article>
-<article class="card"><div class="thai">E</div><div class="german">E wie Emil</div></article>
-<article class="card"><div class="thai">F</div><div class="german">F wie Friedrich</div></article>
-<article class="card"><div class="thai">G</div><div class="german">G wie Gustav</div></article>
-<article class="card"><div class="thai">H</div><div class="german">H wie Heinrich</div></article>
-<article class="card"><div class="thai">I</div><div class="german">I wie Ida</div></article>
-<article class="card"><div class="thai">J</div><div class="german">J wie Julius</div></article>
-<article class="card"><div class="thai">K</div><div class="german">K wie Kaufmann</div></article>
-<article class="card"><div class="thai">L</div><div class="german">L wie Ludwig</div></article>
-<article class="card"><div class="thai">M</div><div class="german">M wie Martha</div></article>
-<article class="card"><div class="thai">N</div><div class="german">N wie Nordpol</div></article>
-<article class="card"><div class="thai">O</div><div class="german">O wie Otto</div></article>
-<article class="card"><div class="thai">P</div><div class="german">P wie Paula</div></article>
-<article class="card"><div class="thai">Q</div><div class="german">Q wie Quelle</div></article>
-<article class="card"><div class="thai">R</div><div class="german">R wie Richard</div></article>
-<article class="card"><div class="thai">S</div><div class="german">S wie Samuel</div></article>
-<article class="card"><div class="thai">T</div><div class="german">T wie Theodor</div></article>
-<article class="card"><div class="thai">U</div><div class="german">U wie Ulrich</div></article>
-<article class="card"><div class="thai">V</div><div class="german">V wie Viktor</div></article>
-<article class="card"><div class="thai">W</div><div class="german">W wie Wilhelm</div></article>
-<article class="card"><div class="thai">X</div><div class="german">X wie Xaver</div></article>
-<article class="card"><div class="thai">Y</div><div class="german">Y wie Ypsilon</div></article>
-<article class="card"><div class="thai">Z</div><div class="german">Z wie Zacharias</div></article></div>
-</details>
-</section><section id="datum" class="category">
-<details>
-<summary>Datum & Uhrzeit<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">วันนี้</div><div class="german">Heute.</div></article>
-<article class="card"><div class="thai">พรุ่งนี้</div><div class="german">Morgen.</div></article>
-<article class="card"><div class="thai">วันจันทร์</div><div class="german">Montag.</div></article>
-<article class="card"><div class="thai">วันอังคาร</div><div class="german">Dienstag.</div></article>
-<article class="card"><div class="thai">วันพุธ</div><div class="german">Mittwoch.</div></article>
-<article class="card"><div class="thai">วันพฤหัสบดี</div><div class="german">Donnerstag.</div></article>
-<article class="card"><div class="thai">วันศุกร์</div><div class="german">Freitag.</div></article>
-<article class="card"><div class="thai">วันเสาร์</div><div class="german">Samstag.</div></article>
-<article class="card"><div class="thai">วันอาทิตย์</div><div class="german">Sonntag.</div></article>
-<article class="card"><div class="thai">นัดของคุณคือเวลา ...</div><div class="german">Ihr Termin ist um ...</div></article>
-<article class="card"><div class="thai">กรุณามาตรงเวลานะคะ/ครับ</div><div class="german">Bitte kommen Sie pünktlich.</div></article></div>
-</details>
-</section><section id="telefonnummer" class="category">
-<details>
-<summary>Telefonnummer<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">กรุณาบอกหมายเลขโทรศัพท์ของคุณค่ะ/ครับ</div><div class="german">Wie lautet Ihre Telefonnummer, bitte?</div></article>
-<article class="card"><div class="thai">ช่วยพูดหมายเลขช้า ๆ ได้ไหมคะ/ครับ</div><div class="german">Könnten Sie die Telefonnummer bitte langsam sagen?</div></article>
-<article class="card"><div class="thai">ฉันขอทวนหมายเลขโทรศัพท์อีกครั้งค่ะ/ครับ</div><div class="german">Ich wiederhole die Telefonnummer noch einmal.</div></article>
-<article class="card"><div class="thai">รหัสประเทศสวิตเซอร์แลนด์คือ +41</div><div class="german">Die Landesvorwahl der Schweiz ist +41.</div></article></div>
-</details>
-</section><section id="whatsapp" class="category">
-<details>
-<summary>WhatsApp / E-Mail<span aria-hidden="true">＋</span></summary>
-<div class="content"><article class="card"><div class="thai">คุณต้องการให้เราติดต่อผ่าน WhatsApp หรืออีเมลไหมคะ/ครับ</div><div class="german">Möchten Sie, dass wir Sie per WhatsApp oder E-Mail kontaktieren?</div></article>
-<article class="card"><div class="thai">กรุณาแจ้งหมายเลข WhatsApp ของคุณค่ะ/ครับ</div><div class="german">Bitte teilen Sie uns Ihre WhatsApp-Nummer mit.</div></article>
-<article class="card"><div class="thai">กรุณาแจ้งอีเมลของคุณค่ะ/ครับ</div><div class="german">Bitte geben Sie Ihre E-Mail-Adresse an.</div></article>
-<article class="card"><div class="thai">กรุณาสะกดอีเมลทีละตัวอักษรค่ะ/ครับ</div><div class="german">Bitte buchstabieren Sie die E-Mail-Adresse Buchstabe für Buchstabe.</div></article>
-<article class="card"><div class="thai">เราได้ส่งข้อมูลเรียบร้อยแล้วค่ะ/ครับ</div><div class="german">Wir haben die Informationen gesendet.</div></article></div>
-</details>
-</section>
-</main>
+      <div class="flow-grid">
+        <button class="flow-card booking" data-flow="booking" type="button">
+          <span class="flow-number">01 · NEUER TERMIN</span><span class="flow-arrow" aria-hidden="true">↗</span>
+          <span class="flow-icon" aria-hidden="true">＋</span>
+          <strong>Termin buchen</strong><small>โทรจองนัด</small>
+        </button>
+        <button class="flow-card cancel" data-flow="cancel" type="button">
+          <span class="flow-number">02 · ABSAGE</span><span class="flow-arrow" aria-hidden="true">↗</span>
+          <span class="flow-icon" aria-hidden="true">×</span>
+          <strong>Termin absagen</strong><small>โทรยกเลิกนัด</small>
+        </button>
+        <button class="flow-card move" data-flow="move" type="button">
+          <span class="flow-number">03 · NEUER ZEITPUNKT</span><span class="flow-arrow" aria-hidden="true">↗</span>
+          <span class="flow-icon" aria-hidden="true">↻</span>
+          <strong>Termin verschieben</strong><small>โทรเลื่อนนัด</small>
+        </button>
+      </div>
 
-<a class="home" href="#home" aria-label="Back to Quick Menu">⌂</a>
-<footer>Jazz Assistant · Dusita Thai Spa · Offline ready</footer>
+      <div class="home-help">
+        <div><strong>Etwas nicht verstanden?</strong><p>ประโยคฉุกเฉิน คำถามทั่วไป Gutschein และการสะกดคำ</p></div>
+        <button class="secondary-btn" data-open-help type="button">Schnellhilfe öffnen</button>
+      </div>
+      <button class="install-btn" id="installButton" type="button" hidden>Auf dem Handy installieren</button>
+    </section>
 
-<script>
-const input = document.getElementById('searchInput');
-const clearButton = document.getElementById('clearButton');
-const cards = [...document.querySelectorAll('.card')];
-const categories = [...document.querySelectorAll('.category')];
-const noResults = document.getElementById('noResults');
+    <section id="callScreen" class="call-screen" aria-live="polite" hidden>
+      <div class="call-top">
+        <div class="call-heading">
+          <button class="back-btn" id="homeButton" type="button" aria-label="Zur Startseite">←</button>
+          <span class="flow-badge" id="flowBadge"></span>
+          <span class="step-count" id="stepCount"></span>
+        </div>
+        <div class="progress-track" aria-label="Gesprächsfortschritt"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
 
-function filterCards() {
-  const term = input.value.trim().toLocaleLowerCase();
-  let totalVisible = 0;
-  categories.forEach(section => {
-    let sectionVisible = 0;
-    section.querySelectorAll('.card').forEach(card => {
-      const visible = !term || card.textContent.toLocaleLowerCase().includes(term);
-      card.hidden = !visible;
-      if (visible) sectionVisible++;
+      <div class="conversation-layout">
+        <article class="conversation-main">
+          <header class="step-header">
+            <p class="step-kicker" id="stepKicker"></p>
+            <h2 class="step-title" id="stepTitle"></h2>
+          </header>
+          <div class="phrase-list" id="phraseList"></div>
+          <p class="step-tip" id="stepTip" hidden></p>
+        </article>
+
+        <aside class="input-panel" id="inputPanel">
+          <h3>Antwort notieren</h3>
+          <p>คำตอบของลูกค้า · wird direkt im Satz eingesetzt</p>
+          <div id="inputContent"></div>
+        </aside>
+      </div>
+
+      <nav class="conversation-nav" aria-label="Gesprächsschritte">
+        <button class="nav-btn" id="previousButton" type="button">← Zurück</button>
+        <button class="nav-btn primary" id="nextButton" type="button">Weiter →</button>
+      </nav>
+    </section>
+  </main>
+
+  <nav class="utility-bar" id="utilityBar" aria-label="Soforthilfe" hidden>
+    <button class="utility-btn" data-quick="slow" type="button"><span>🐢</span>Langsamer</button>
+    <button class="utility-btn" data-quick="repeat" type="button"><span>↻</span>Wiederholen</button>
+    <button class="utility-btn" data-quick="wait" type="button"><span>◷</span>Moment</button>
+    <button class="utility-btn help" data-open-help type="button"><span>＋</span>Mehr Hilfe</button>
+  </nav>
+
+  <dialog id="quickDialog" aria-labelledby="quickTitle">
+    <div class="dialog-head">
+      <div><h2 id="quickTitle">Soforthilfe</h2><p>ประโยคที่ใช้ได้ทุกสถานการณ์</p></div>
+      <button class="icon-btn" data-close-dialog type="button" aria-label="Schliessen">×</button>
+    </div>
+    <div class="dialog-content" id="quickDialogContent"></div>
+  </dialog>
+
+  <dialog id="helpDialog" aria-labelledby="helpTitle">
+    <div class="dialog-head">
+      <div><h2 id="helpTitle">Schnellhilfe</h2><p>ค้นหาประโยคเสริมระหว่างสนทนา</p></div>
+      <button class="icon-btn" data-close-dialog type="button" aria-label="Schliessen">×</button>
+    </div>
+    <div class="dialog-content" id="helpContent"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const labels = {
+      massage: { thai: 'Thai-Massage', oil: 'Ölmassage', other: 'Massage' },
+      duration: { '45': '45 Minuten', '60': 'eine Stunde', '90': 'eineinhalb Stunden', '120': 'zwei Stunden' }
+    };
+    const defaultState = {
+      name: '', phone: '', massage: '', duration: '', preferredTherapist: '',
+      newDate: '', newStart: '', newEnd: '', oldDate: '', oldTime: '',
+      availability: '', alternativeDate: '', existingCustomer: '',
+      voucher: '', voucherNumber: '', voucherBalance: '', pregnancyWeek: '', waitlist: ''
+    };
+    let state = { ...defaultState };
+    let activeFlow = null;
+    let activeStep = 0;
+    let stepHistory = [];
+    let deferredInstallPrompt = null;
+
+    const valueOr = (value, fallback) => value && value.trim ? (value.trim() || fallback) : (value || fallback);
+    const displayDate = (value, fallback = '…') => {
+      if (!value) return fallback;
+      const date = new Date(`${value}T12:00:00`);
+      if (Number.isNaN(date.getTime())) return value;
+      const weekday = new Intl.DateTimeFormat('de-CH', { weekday: 'long' }).format(date);
+      const dayMonth = new Intl.DateTimeFormat('de-CH', { day: 'numeric', month: 'long' }).format(date);
+      return `${weekday}, den ${dayMonth}`;
+    };
+    const time = (value, fallback = '…') => value || fallback;
+    const person = () => valueOr(state.name, 'Frau/Herr …');
+    const massage = () => labels.massage[state.massage] || '…-Massage';
+    const duration = () => labels.duration[state.duration] || '… Minuten';
+    const therapist = () => valueOr(state.preferredTherapist, 'einer Therapeutin');
+    const phrase = (thai, german, note = false) => ({ thai, german, note });
+
+    const sharedGreeting = () => [
+      phrase('รับโทรศัพท์', 'Dusita Thai Spa. Jazz. Guten Tag.'),
+      phrase('ถามว่าช่วยอะไรได้บ้าง', 'Was können wir für Sie tun?')
+    ];
+
+    const flows = {
+      booking: {
+        badge: 'Termin buchen · โทรจองนัด',
+        kicker: 'Neuer Termin',
+        steps: [
+          {
+            title: 'Freundlich begrüssen',
+            phrases: sharedGreeting
+          },
+          {
+            title: 'Massage auswählen',
+            phrases: () => [phrase('ถามประเภทการนวด', 'An was für eine Massage haben Sie gedacht?'), phrase('ถามว่าต้องการใช้น้ำมันไหม', 'Möchten Sie eine Thai-Massage oder eine Ölmassage?')],
+            choices: [{ key: 'massage', label: 'Massage', options: [
+              ['thai', 'Thai-Massage', 'ไม่ใช้น้ำมัน'], ['oil', 'Ölmassage', 'ใช้น้ำมัน'], ['other', 'Andere Massage', 'ประเภทอื่น']
+            ]}]
+          },
+          {
+            title: 'Dauer erfragen',
+            phrases: () => [phrase('ถามว่าต้องการนวดนานเท่าไร', 'Für wie lange?')],
+            choices: [{ key: 'duration', label: 'Dauer', options: [
+              ['45', '45 Minuten', '45 นาที'], ['60', 'Eine Stunde', '60 นาที'], ['90', 'Eineinhalb Stunden', '90 นาที'], ['120', 'Zwei Stunden', '120 นาที']
+            ]}]
+          },
+          {
+            title: 'Wunschtermin finden',
+            phrases: () => [
+              phrase('ถามวันและเวลารวมกัน', 'An welchen Tag und welche Uhrzeit haben Sie gedacht?'),
+              phrase('หากต้องการทราบเวลาที่มาได้เร็วที่สุด', 'Wann können Sie frühestens kommen?')
+            ],
+            fields: [
+              { key: 'newDate', label: 'Gewünschtes Datum', type: 'date' },
+              { key: 'newStart', label: 'Früheste / gewünschte Uhrzeit', type: 'time' }
+            ],
+            tip: 'ถ้าลูกค้าพูดว่า „ab 13 Uhr“ หมายถึง ลูกค้ามาได้ตั้งแต่ 13 นาฬิกาเป็นต้นไป'
+          },
+          {
+            title: 'Therapeutin erfragen',
+            phrases: () => [phrase('ถามว่าต้องการนวดกับใครเป็นพิเศษไหม หรือใครก็ได้', 'Haben Sie eine bestimmte Therapeutin, oder ist es Ihnen egal?')],
+            fields: [{ key: 'preferredTherapist', label: 'Wunsch-Therapeutin (optional)', type: 'text', placeholder: 'Name oder „egal“' }]
+          },
+          {
+            title: 'Im Kalender nachschauen',
+            phrases: () => {
+              const result = [phrase('บอกให้ลูกค้ารอสักครู่', 'Einen Moment bitte. Ich schaue nach.')];
+              if (state.availability === 'free') result.push(phrase('มีเวลาว่าง', `Wir haben von ${time(state.newStart)} bis ${time(state.newEnd)} Uhr einen Termin frei. Passt das für Sie?`));
+              if (state.availability === 'other') result.push(phrase('เสนอเวลาอื่น', `Was wäre mit ${time(state.newStart)} bis ${time(state.newEnd)} Uhr?`));
+              if (state.availability === 'full') result.push(phrase('เต็มแล้ว และเสนอหาวันอื่น', 'Leider haben wir keinen Termin mehr frei. Möchten Sie einen anderen Tag, oder sollen wir Sie auf die Warteliste setzen?'));
+              if (state.availability === 'therapist') result.push(phrase('พนักงานที่ต้องการไม่ว่าง', `${therapist()} ist zu dieser Zeit leider nicht verfügbar. Wäre eine andere Therapeutin auch in Ordnung?`));
+              return result;
+            },
+            choices: [{ key: 'availability', label: 'Ergebnis im Kalender', options: [
+              ['free', 'Termin ist frei', 'ว่าง'], ['other', 'Andere Zeit anbieten', 'เสนอเวลาอื่น'], ['therapist', 'Therapeutin nicht frei', 'พนักงานไม่ว่าง'], ['full', 'Ganz ausgebucht', 'เต็มแล้ว']
+            ]}, {
+              key: 'waitlist', label: 'Möchte der Kunde auf die Warteliste?', show: () => state.availability === 'full', options: [
+                ['yes', 'Ja, auf die Warteliste', 'ลงชื่อในรายการรอ'], ['no', 'Nein, danke', 'ไม่ลงชื่อ']
+              ]
+            }],
+            fields: [
+              { key: 'newStart', label: 'Termin von', type: 'time', show: () => ['free','other'].includes(state.availability) },
+              { key: 'newEnd', label: 'Termin bis', type: 'time', show: () => ['free','other'].includes(state.availability) }
+            ],
+            next: () => state.availability === 'full' && state.waitlist === 'no' ? 9 : 6,
+            nextLabel: () => state.availability === 'full' ? (state.waitlist === 'yes' ? 'Kontaktdaten aufnehmen →' : state.waitlist === 'no' ? 'Gespräch abschliessen →' : 'Bitte Warteliste wählen') : 'Weiter →',
+            canContinue: () => state.availability !== 'full' || Boolean(state.waitlist)
+          },
+          {
+            title: 'Kundendaten aufnehmen',
+            phrases: () => [
+              phrase('ถามว่าเคยมาร้านหรือยัง', 'Waren Sie schon einmal bei uns?'),
+              phrase('ถามชื่อ', 'Wie ist Ihr Vorname bitte? Könnten Sie ihn bitte buchstabieren?'),
+              phrase('ถามเบอร์โทรศัพท์', 'Unter welcher Nummer können wir Sie gut erreichen?')
+            ],
+            choices: [{ key: 'existingCustomer', label: 'Schon einmal hier?', options: [
+              ['yes', 'Ja, schon einmal', 'เคยมาแล้ว'], ['no', 'Nein, zum ersten Mal', 'ยังไม่เคยมา']
+            ]}],
+            fields: [
+              { key: 'name', label: 'Vorname / Name', type: 'text', placeholder: 'Kundenname' },
+              { key: 'phone', label: 'Telefonnummer', type: 'tel', placeholder: 'z. B. 079 666 11 20' }
+            ],
+            tip: 'Zum Prüfen: „Ich wiederhole: … Stimmt das?“',
+            next: () => state.availability === 'full' && state.waitlist === 'yes' ? 9 : 7
+          },
+          {
+            title: 'Gutschein prüfen',
+            phrases: () => {
+              const result = [phrase('ถามว่ามีบัตรกำนัลไหม', 'Haben Sie einen Geschenkgutschein?')];
+              if (state.voucher === 'yes') result.push(phrase('ถามหมายเลขบัตรกำนัล', 'Wie lautet die Gutschein-Nummer?'));
+              return result;
+            },
+            choices: [{ key: 'voucher', label: 'Geschenkgutschein', options: [
+              ['no', 'Nein', 'ไม่มี'], ['yes', 'Ja', 'มี']
+            ]}],
+            fields: [{ key: 'voucherNumber', label: 'Gutschein-Nummer', type: 'text', placeholder: 'Nummer', show: () => state.voucher === 'yes' }],
+            tip: 'Weitere Gutschein-Sätze findest du jederzeit unter „Mehr Hilfe“.'
+          },
+          {
+            title: 'Termin zusammenfassen',
+            phrases: () => [
+              phrase('สรุปข้อมูลนัดให้ลูกค้าฟัง', `Sehr gerne, ${person()}. Wir haben für Sie am ${displayDate(state.newDate)} von ${time(state.newStart)} bis ${time(state.newEnd)} Uhr eine ${massage()} für ${duration()} reserviert. Ist das korrekt?`),
+              state.phone ? phrase('ทวนเบอร์โทรศัพท์', `Ich wiederhole Ihre Telefonnummer: ${state.phone}. Stimmt das?`) : phrase('อย่าลืมตรวจสอบเบอร์โทรศัพท์', 'Ich wiederhole Ihre Telefonnummer: … Stimmt das?', true)
+            ],
+            tip: 'Vor dem Bestätigen Datum, Uhrzeit, Massage, Dauer und Telefonnummer einmal kontrollieren.'
+          },
+          {
+            title: 'Gespräch abschliessen',
+            phrases: () => {
+              if (state.availability === 'full' && state.waitlist === 'yes') return [
+                phrase('ยืนยันว่าใส่ชื่อในรายการรอแล้ว', 'Vielen Dank. Ich habe Sie auf die Warteliste gesetzt. Wir melden uns, sobald ein Termin frei wird.'),
+                phrase('ขอบคุณและวางสาย', 'Ich wünsche Ihnen einen schönen Tag. Auf Wiederhören.')
+              ];
+              if (state.availability === 'full') return [
+                phrase('ปิดสายโดยไม่มีนัด', 'Schade, dass wir heute keinen passenden Termin finden konnten.'),
+                phrase('ขอบคุณและวางสาย', 'Vielen Dank für Ihren Anruf. Ich wünsche Ihnen einen schönen Tag. Auf Wiederhören.')
+              ];
+              return [
+                phrase('ยืนยันนัด', 'Perfekt. Ihr Termin ist bestätigt.'),
+                phrase('ขอบคุณและวางสาย', 'Vielen Dank für Ihren Anruf. Ich wünsche Ihnen einen schönen Tag. Auf Wiederhören.')
+              ];
+            }
+          }
+        ]
+      },
+      cancel: {
+        badge: 'Termin absagen · โทรยกเลิกนัด',
+        kicker: 'Absage',
+        steps: [
+          { title: 'Freundlich begrüssen', phrases: sharedGreeting },
+          {
+            title: 'Name und Termin erfragen',
+            phrases: () => [phrase('ขอให้พูดช้าลงและทวนชื่อกับวันเวลานัด', 'Entschuldigung, könnten Sie bitte etwas langsamer sprechen und mir Ihren Namen und den Termin noch einmal sagen?')],
+            fields: [
+              { key: 'name', label: 'Name', type: 'text', placeholder: 'Kundenname' },
+              { key: 'oldDate', label: 'Datum des Termins', type: 'date' },
+              { key: 'oldTime', label: 'Uhrzeit', type: 'time' }
+            ]
+          },
+          {
+            title: 'Termin im Kalender suchen',
+            phrases: () => [
+              phrase('ทวนชื่อและนัด', `${person()}, Ihr Termin ist am ${displayDate(state.oldDate)} um ${time(state.oldTime)} Uhr. Ist das richtig?`),
+              phrase('บอกให้รอสักครู่', 'Vielen Dank, alles klar. Kein Problem. Ich schaue kurz in den Kalender. Einen Moment bitte.')
+            ]
+          },
+          {
+            title: 'Absage bestätigen',
+            phrases: () => [phrase('ยืนยันว่าได้ยกเลิกนัดแล้ว', 'Ich habe Ihren Termin storniert.')],
+            tip: 'พูดอย่างเป็นมิตร: „Kein Problem / alles klar“ ไม่พูดแค่ „okay“ และไม่แสดงความผิดหวัง'
+          },
+          {
+            title: 'Kunden freundlich verabschieden',
+            phrases: () => [
+              phrase('ปิดบทสนทนาแบบรักษาลูกค้า', 'Wir würden uns freuen, Sie ein anderes Mal wieder bei uns begrüssen zu dürfen.'),
+              phrase('ปิดสาย', 'Ich wünsche Ihnen einen schönen Tag. Auf Wiederhören.')
+            ]
+          }
+        ]
+      },
+      move: {
+        badge: 'Termin verschieben · โทรเลื่อนนัด',
+        kicker: 'Terminänderung',
+        steps: [
+          { title: 'Freundlich begrüssen', phrases: sharedGreeting },
+          {
+            title: 'Ursprünglichen Termin finden',
+            phrases: () => [
+              phrase('ถามชื่อ', 'Wie ist Ihr Name bitte?'),
+              phrase('ถามวันเวลานัดเดิม', 'Wann ist Ihr ursprünglicher Termin?')
+            ],
+            fields: [
+              { key: 'name', label: 'Name', type: 'text', placeholder: 'Kundenname' },
+              { key: 'oldDate', label: 'Bisheriges Datum', type: 'date' },
+              { key: 'oldTime', label: 'Bisherige Uhrzeit', type: 'time' }
+            ]
+          },
+          {
+            title: 'Alten Termin bestätigen',
+            phrases: () => [
+              phrase('ทวนนัดเดิม', `Ihr Termin ist am ${displayDate(state.oldDate)} um ${time(state.oldTime)} Uhr, ist das richtig?`),
+              phrase('รอสักครู่', 'Vielen Dank. Einen Moment bitte. Ich schaue kurz nach.')
+            ]
+          },
+          {
+            title: 'Neuen Wunsch erfragen',
+            phrases: () => [
+              phrase('ถามว่าต้องการเลื่อนไปวันไหน', 'Auf welchen Tag möchten Sie den Termin verschieben?'),
+              phrase('ถามเวลาที่สะดวก', 'Welche Uhrzeit passt Ihnen?'),
+              phrase('ถามเวลาที่มาได้เร็วที่สุด', 'Wann können Sie frühestens kommen?')
+            ],
+            fields: [
+              { key: 'newDate', label: 'Neues Datum', type: 'date' },
+              { key: 'newStart', label: 'Gewünschte / früheste Uhrzeit', type: 'time' }
+            ]
+          },
+          {
+            title: 'Neuen Termin anbieten',
+            phrases: () => [
+              phrase('เสนอเวลานัดใหม่', `Ich hätte einen Termin von ${time(state.newStart)} bis ${time(state.newEnd)} Uhr. Passt das für Sie?`)
+            ],
+            fields: [
+              { key: 'newStart', label: 'Neuer Termin von', type: 'time' },
+              { key: 'newEnd', label: 'Neuer Termin bis', type: 'time' }
+            ]
+          },
+          {
+            title: 'Neuen Termin wiederholen',
+            phrases: () => [phrase('ทวนวันเวลานัดใหม่', `Wunderbar. Dann verschieben wir Ihren Termin auf ${displayDate(state.newDate)}, von ${time(state.newStart)} bis ${time(state.newEnd)} Uhr. Ist das richtig?`)]
+          },
+          {
+            title: 'Verschiebung bestätigen',
+            phrases: () => [
+              phrase('ยืนยันว่าเลื่อนนัดให้แล้ว', 'Perfekt. Ihr neuer Termin ist bestätigt.'),
+              phrase('ขอบคุณและวางสาย', 'Vielen Dank. Ich wünsche Ihnen einen schönen Tag. Auf Wiederhören.')
+            ]
+          }
+        ]
+      }
+    };
+
+    const quickPhrases = {
+      slow: [phrase('ขอโทษค่ะ ฉันกำลังเรียนภาษาเยอรมัน กรุณาพูดช้าลงและพูดภาษาเยอรมันมาตรฐาน', 'Entschuldigung, ich lerne noch Deutsch. Könnten Sie bitte etwas langsamer und Hochdeutsch sprechen? Ich verstehe noch nicht alles.')],
+      repeat: [
+        phrase('ช่วยพูดอีกครั้งได้ไหม', 'Könnten Sie das bitte wiederholen?'),
+        phrase('ช่วยพูดวันที่อีกครั้งได้ไหม', 'Könnten Sie das Datum bitte wiederholen?'),
+        phrase('ช่วยบอกเวลาอีกครั้งได้ไหม', 'Könnten Sie die Uhrzeit bitte noch einmal sagen?'),
+        phrase('ขอทราบชื่ออีกครั้ง', 'Wie ist Ihr Name bitte?')
+      ],
+      wait: [phrase('รอสักครู่ ฉันกำลังตรวจสอบ', 'Einen Moment bitte. Ich schaue kurz nach.')]
+    };
+
+    const helpSections = [
+      {
+        title: '🐢 Nicht verstanden · ฟังไม่ทัน', open: true,
+        items: [...quickPhrases.slow, ...quickPhrases.repeat, ...quickPhrases.wait]
+      },
+      {
+        title: '🎁 Gutschein · บัตรกำนัล',
+        items: [
+          phrase('สามารถใช้กับการนวดแบบอื่นได้', 'Den Gutschein können Sie auch für jede andere Massage verwenden.'),
+          phrase('ยอดคงเหลือใช้ครั้งหน้าได้', 'Den Restbetrag Ihres Gutscheins können Sie beim nächsten Termin verwenden.'),
+          phrase('บัตรกำนัลยังมีเงินเหลือ', 'Ihr Gutschein hat noch … Franken Guthaben. Sie können es beim nächsten Mal einlösen.'),
+          phrase('บัตรกำนัลไม่พอ ต้องจ่ายเพิ่ม', 'Ihr Gutschein reicht leider nicht aus. Der noch zu bezahlende Betrag beträgt … Franken.')
+        ]
+      },
+      {
+        title: '💬 Häufige Fragen · คำถามทั่วไป',
+        items: [
+          phrase('ประกันสุขภาพ', 'Nein, wir sind nicht krankenkassenanerkannt. Wir können Ihnen aber eine Bestätigung für Ihre Zusatzversicherung ausstellen.'),
+          phrase('เด็กอายุ 8 ปีขึ้นไป', 'Kinder ab 8 Jahren können bei uns massiert werden.'),
+          phrase('เสื้อผ้าสำหรับนวดไทย', 'Für die Thai-Massage erhalten Sie Massagekleidung.'),
+          phrase('เสื้อผ้าสำหรับนวดน้ำมัน', 'Bei der Ölmassage tragen Sie nur Ihre Unterwäsche. Sie werden jederzeit mit einem Tuch zugedeckt.'),
+          phrase('นวดหญิงตั้งครรภ์', 'Ja, wir massieren Schwangere ab der 13. Schwangerschaftswoche. In welcher Schwangerschaftswoche sind Sie?')
+        ]
+      },
+      {
+        title: '📅 Kein Termin frei · เต็มแล้ว',
+        items: [
+          phrase('ไม่มีเวลาว่างแล้ว', 'Leider haben wir keinen Termin mehr frei.'),
+          phrase('เวลานี้เต็ม', 'Wir sind zu dieser Zeit leider ausgebucht.'),
+          phrase('หาดูเวลาอื่น', 'Ich schaue kurz nach einem anderen Termin.'),
+          phrase('สนใจวันอื่นไหม', 'Möchten Sie einen anderen Tag?'),
+          phrase('ลงชื่อในรายการรอไหม', 'Sollen wir Sie auf die Warteliste setzen?')
+        ]
+      },
+      {
+        title: '☎ Telefonnummer · เบอร์โทรศัพท์',
+        items: [
+          phrase('ถามเบอร์โทรศัพท์', 'Unter welcher Nummer können wir Sie gut erreichen?'),
+          phrase('ทวนเบอร์โทรศัพท์', 'Ich wiederhole noch einmal: … Stimmt das?'),
+          phrase('ตัวอย่าง', '079 666 11 20: null neunundsiebzig, sechshundertsechsundsechzig, elf, zwanzig.')
+        ]
+      },
+      {
+        title: '🔤 Buchstabieren · สะกดชื่อ', alphabet: true
+      },
+      {
+        title: '👋 Verabschieden · ปิดสาย',
+        items: [
+          phrase('กลางวัน', 'Ich wünsche Ihnen einen schönen Tag. Auf Wiederhören.'),
+          phrase('ตอนเย็น', 'Ich wünsche Ihnen einen schönen Abend. Auf Wiederhören.'),
+          phrase('สุดสัปดาห์', 'Ich wünsche Ihnen ein schönes Wochenende. Auf Wiederhören.')
+        ]
+      }
+    ];
+
+    const homeScreen = document.getElementById('homeScreen');
+    const callScreen = document.getElementById('callScreen');
+    const utilityBar = document.getElementById('utilityBar');
+    const phraseList = document.getElementById('phraseList');
+    const inputContent = document.getElementById('inputContent');
+    const inputPanel = document.getElementById('inputPanel');
+    const nextButton = document.getElementById('nextButton');
+    const previousButton = document.getElementById('previousButton');
+    const quickDialog = document.getElementById('quickDialog');
+    const helpDialog = document.getElementById('helpDialog');
+
+    function renderPhraseCards(phrases, container) {
+      container.replaceChildren();
+      phrases.forEach(item => {
+        const card = document.createElement('article');
+        card.className = `phrase-card${item.note ? ' is-note' : ''}`;
+        const thai = document.createElement('p');
+        thai.className = 'thai-label';
+        thai.textContent = item.thai;
+        const german = document.createElement('p');
+        german.className = 'german-phrase';
+        german.textContent = item.german;
+        const speak = document.createElement('button');
+        speak.className = 'speak-btn';
+        speak.type = 'button';
+        speak.setAttribute('aria-label', 'Deutschen Satz vorlesen');
+        speak.textContent = '🔊';
+        speak.addEventListener('click', () => speakText(item.german, speak));
+        card.append(thai, german, speak);
+        container.append(card);
+      });
+    }
+
+    function makeField(config) {
+      if (config.show && !config.show()) return null;
+      const label = document.createElement('label');
+      label.className = 'field';
+      const text = document.createElement('span');
+      text.textContent = config.label;
+      const input = document.createElement('input');
+      input.type = config.type || 'text';
+      input.value = state[config.key] || '';
+      input.placeholder = config.placeholder || '';
+      input.autocomplete = 'off';
+      input.addEventListener('input', event => {
+        state[config.key] = event.target.value;
+        renderCurrentPhrases();
+      });
+      label.append(text, input);
+      return label;
+    }
+
+    function makeChoices(group) {
+      if (group.show && !group.show()) return null;
+      const wrapper = document.createElement('div');
+      const label = document.createElement('span');
+      label.className = 'choice-label';
+      label.textContent = group.label;
+      const choices = document.createElement('div');
+      choices.className = 'choice-group';
+      group.options.forEach(([value, german, thai]) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `choice${state[group.key] === value ? ' is-selected' : ''}`;
+        button.innerHTML = `${german}<small>${thai}</small>`;
+        button.addEventListener('click', () => {
+          state[group.key] = value;
+          renderInputs();
+          renderCurrentPhrases();
+          updateNavigation();
+        });
+        choices.append(button);
+      });
+      wrapper.append(label, choices);
+      return wrapper;
+    }
+
+    function renderInputs() {
+      const step = flows[activeFlow].steps[activeStep];
+      inputContent.replaceChildren();
+      (step.choices || []).forEach(group => {
+        const element = makeChoices(group);
+        if (element) inputContent.append(element);
+      });
+      (step.fields || []).forEach(field => {
+        const element = makeField(field);
+        if (element) inputContent.append(element);
+      });
+      const hasInputs = (step.choices && step.choices.length) || (step.fields && step.fields.some(field => !field.show || field.show()));
+      inputPanel.hidden = !hasInputs;
+      if (!hasInputs) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-input';
+        empty.textContent = 'Hier musst du nichts notieren.';
+        inputContent.append(empty);
+      }
+    }
+
+    function renderCurrentPhrases() {
+      if (!activeFlow) return;
+      const step = flows[activeFlow].steps[activeStep];
+      renderPhraseCards(step.phrases(), phraseList);
+    }
+
+    function updateNavigation() {
+      const flow = flows[activeFlow];
+      const step = flow.steps[activeStep];
+      previousButton.disabled = activeStep === 0 && stepHistory.length === 0;
+      nextButton.disabled = step.canContinue ? !step.canContinue() : false;
+      nextButton.textContent = activeStep === flow.steps.length - 1
+        ? 'Gespräch beenden ✓'
+        : step.nextLabel ? step.nextLabel() : 'Weiter →';
+    }
+
+    function renderStep() {
+      const flow = flows[activeFlow];
+      const step = flow.steps[activeStep];
+      callScreen.className = `call-screen ${activeFlow}`;
+      const badge = document.getElementById('flowBadge');
+      badge.className = `flow-badge ${activeFlow}`;
+      badge.textContent = flow.badge;
+      document.getElementById('stepKicker').textContent = flow.kicker;
+      document.getElementById('stepTitle').textContent = step.title;
+      document.getElementById('stepCount').textContent = `${activeStep + 1} / ${flow.steps.length}`;
+      document.getElementById('progressBar').style.width = `${((activeStep + 1) / flow.steps.length) * 100}%`;
+      const tip = document.getElementById('stepTip');
+      tip.textContent = step.tip || '';
+      tip.hidden = !step.tip;
+      updateNavigation();
+      renderCurrentPhrases();
+      renderInputs();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startFlow(flowName) {
+      activeFlow = flowName;
+      activeStep = 0;
+      stepHistory = [];
+      state = { ...defaultState };
+      homeScreen.hidden = true;
+      callScreen.hidden = false;
+      utilityBar.hidden = false;
+      history.replaceState(null, '', `${location.pathname}?flow=${flowName}`);
+      renderStep();
+    }
+
+    function goHome() {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      activeFlow = null;
+      stepHistory = [];
+      homeScreen.hidden = false;
+      callScreen.hidden = true;
+      utilityBar.hidden = true;
+      history.replaceState(null, '', location.pathname);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function speakText(text, button) {
+      if (!('speechSynthesis' in window)) return showToast('Vorlesen wird auf diesem Gerät nicht unterstützt.');
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text.replace(/…/g, ''));
+      utterance.lang = 'de-CH';
+      utterance.rate = .84;
+      button.classList.add('is-speaking');
+      utterance.onend = utterance.onerror = () => button.classList.remove('is-speaking');
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function showQuick(type) {
+      document.getElementById('quickTitle').textContent = type === 'slow' ? 'Langsamer sprechen' : type === 'repeat' ? 'Bitte wiederholen' : 'Einen Moment';
+      renderPhraseCards(quickPhrases[type], document.getElementById('quickDialogContent'));
+      quickDialog.showModal();
+    }
+
+    function renderHelp() {
+      const content = document.getElementById('helpContent');
+      content.replaceChildren();
+      helpSections.forEach(section => {
+        const details = document.createElement('details');
+        details.className = 'help-section';
+        details.open = Boolean(section.open);
+        const summary = document.createElement('summary');
+        summary.textContent = section.title;
+        details.append(summary);
+        if (section.alphabet) {
+          const alphabet = document.createElement('div');
+          alphabet.className = 'alphabet-grid help-cards';
+          const words = ['A – Anton','B – Berta','C – Cäsar','D – Dora','E – Emil','F – Friedrich','G – Gustav','H – Heinrich','I – Ida','J – Julius','K – Kaufmann','L – Ludwig','M – Martha','N – Nordpol','O – Otto','P – Paula','Q – Quelle','R – Richard','S – Samuel','T – Theodor','U – Ulrich','V – Viktor','W – Wilhelm','X – Xaver','Y – Ypsilon','Z – Zacharias'];
+          words.forEach(word => { const span = document.createElement('span'); span.textContent = word; alphabet.append(span); });
+          details.append(alphabet);
+        } else {
+          const cards = document.createElement('div');
+          cards.className = 'help-cards';
+          renderPhraseCards(section.items, cards);
+          details.append(cards);
+        }
+        content.append(details);
+      });
+    }
+
+    let toastTimer;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    document.querySelectorAll('[data-flow]').forEach(button => button.addEventListener('click', () => startFlow(button.dataset.flow)));
+    document.getElementById('homeButton').addEventListener('click', goHome);
+    previousButton.addEventListener('click', () => {
+      if (stepHistory.length) activeStep = stepHistory.pop();
+      else if (activeStep > 0) activeStep -= 1;
+      renderStep();
     });
-    section.hidden = sectionVisible === 0;
-    if (term && sectionVisible > 0) section.querySelector('details').open = true;
-    totalVisible += sectionVisible;
-  });
-  noResults.style.display = totalVisible ? 'none' : 'block';
-}
-input.addEventListener('input', filterCards);
-clearButton.addEventListener('click', () => {
-  input.value = '';
-  filterCards();
-  input.focus();
-});
+    nextButton.addEventListener('click', () => {
+      const flow = flows[activeFlow];
+      const step = flow.steps[activeStep];
+      const count = flow.steps.length;
+      if (step.canContinue && !step.canContinue()) return;
+      if (activeStep < count - 1) {
+        stepHistory.push(activeStep);
+        activeStep = step.next ? step.next() : activeStep + 1;
+        renderStep();
+      }
+      else { showToast('Gespräch abgeschlossen'); setTimeout(goHome, 450); }
+    });
+    document.querySelectorAll('[data-quick]').forEach(button => button.addEventListener('click', () => showQuick(button.dataset.quick)));
+    document.querySelectorAll('[data-open-help]').forEach(button => button.addEventListener('click', () => helpDialog.showModal()));
+    document.querySelectorAll('[data-close-dialog]').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
+    [quickDialog, helpDialog].forEach(dialog => dialog.addEventListener('click', event => {
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    }));
 
-document.querySelectorAll('.menu-grid a').forEach(link => {
-  link.addEventListener('click', () => {
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) target.querySelector('details').open = true;
-  });
-});
+    function updateConnection() {
+      const online = navigator.onLine;
+      const status = document.getElementById('connectionStatus');
+      status.classList.toggle('is-offline', !online);
+      document.getElementById('connectionText').textContent = online ? 'Bereit' : 'Offline bereit';
+    }
+    window.addEventListener('online', updateConnection);
+    window.addEventListener('offline', updateConnection);
+    updateConnection();
+    renderHelp();
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}
-</script>
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      document.getElementById('installButton').hidden = false;
+    });
+    document.getElementById('installButton').addEventListener('click', async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      document.getElementById('installButton').hidden = true;
+    });
+
+    const initialFlow = new URLSearchParams(location.search).get('flow');
+    if (flows[initialFlow]) startFlow(initialFlow);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+  </script>
 </body>
 </html>
