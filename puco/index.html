@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6d5dfc">
+  <meta name="description" content="A beginner-friendly, offline PUCO cheat sheet for iPhone and iPad.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PUCO Guide">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Puco Cheat Sheet</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <button class="icon-button" id="homeButton" aria-label="Go to home" title="Home">⌂</button>
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">P</span>
+      <div>
+        <strong>Puco Cheat Sheet</strong>
+        <small>iOS & iPadOS · Beginner essentials</small>
+      </div>
+    </div>
+    <button class="icon-button" id="helpButton" aria-label="Open quick help" title="Quick help">?</button>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero" id="hero">
+      <p class="eyebrow">PUCO AI Launcher</p>
+      <h1>From idea to a ready AI prompt.</h1>
+      <p>Find a template, fill the guided form, preview the result, then copy it or open your preferred AI app.</p>
+      <div class="hero-actions">
+        <button class="primary-button" data-route="workflow">Start first prompt</button>
+        <button class="secondary-button" id="installButton" hidden>Install app</button>
+      </div>
+      <div class="scope-note"><strong>Scope:</strong> iPhone and iPad. The global keyboard hotkey is a macOS-only feature.</div>
+    </section>
+
+    <section class="search-panel" aria-labelledby="searchTitle">
+      <h2 id="searchTitle" class="visually-hidden">Search the cheat sheet</h2>
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="Search prompts, variables, favorites…" autocomplete="off">
+        <button id="clearSearch" class="clear-button" aria-label="Clear search" hidden>×</button>
+      </label>
+      <div class="filter-row" id="filterRow" aria-label="Filters"></div>
+    </section>
+
+    <section id="homeView">
+      <h2 class="section-heading">Choose a starting point</h2>
+      <div class="category-grid" id="categoryGrid"></div>
+
+      <div class="split-section">
+        <section>
+          <div class="section-title-row">
+            <h2>Quick tasks</h2>
+            <button class="text-button" data-route="all">View all</button>
+          </div>
+          <div class="card-list" id="quickTasks"></div>
+        </section>
+        <section>
+          <div class="section-title-row">
+            <h2>Recently viewed</h2>
+            <button class="text-button" id="clearRecent">Clear</button>
+          </div>
+          <div class="card-list compact" id="recentList"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="listView" hidden>
+      <div class="section-title-row sticky-title">
+        <div>
+          <button class="back-link" id="listBack">← Home</button>
+          <h2 id="listTitle">Reference</h2>
+          <p id="listSubtitle"></p>
+        </div>
+        <button class="secondary-button small" id="resetFilters">Reset filters</button>
+      </div>
+      <div id="resultsSummary" class="results-summary" aria-live="polite"></div>
+      <div class="card-list" id="resultsList"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <strong>No matching items</strong>
+        <p>Try fewer words or reset the filters.</p>
+        <button class="primary-button" id="emptyReset">Show everything</button>
+      </div>
+    </section>
+
+    <section id="detailView" hidden></section>
+
+    <section id="workflowView" hidden>
+      <button class="back-link" id="workflowExit">← Home</button>
+      <div class="workflow-shell">
+        <div class="progress-row">
+          <span id="progressText">Step 1 of 5</span>
+          <progress id="workflowProgress" max="5" value="1"></progress>
+        </div>
+        <div id="workflowContent"></div>
+        <div class="workflow-controls">
+          <button class="secondary-button" id="workflowBack">Back</button>
+          <button class="primary-button" id="workflowNext">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="sourcesView" hidden>
+      <button class="back-link" id="sourcesBack">← Home</button>
+      <article class="detail-card">
+        <p class="eyebrow">References</p>
+        <h1>Sources</h1>
+        <p>This guide summarizes project documentation and the official PUCO website. Feature availability and pricing can change.</p>
+        <ul class="source-list">
+          <li><strong>PUCO project codebase guide</strong> — supplied project documentation, accessed 17 July 2026.</li>
+          <li><strong>PUCO project description</strong> — supplied project documentation, accessed 17 July 2026.</li>
+          <li><strong>PUCO product abstract</strong> — supplied project documentation, accessed 17 July 2026.</li>
+          <li><a href="https://puco.app/" target="_blank" rel="noopener">Official PUCO website ↗</a> — accessed 17 July 2026.</li>
+          <li><a href="https://apps.apple.com/us/app/puco-the-ai-prompt-studio/id6758052332" target="_blank" rel="noopener">PUCO on the Apple App Store ↗</a> — accessed 17 July 2026. The linked listing may currently describe the Mac release.</li>
+        </ul>
+        <div class="warning"><strong>Please verify:</strong> Current prices, prompt counts, subscription entitlements, and TestFlight/App Store availability are runtime or store-managed information.</div>
+      </article>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Primary navigation">
+    <button data-route="home" class="active"><span aria-hidden="true">⌂</span><small>Home</small></button>
+    <button data-route="all"><span aria-hidden="true">⌕</span><small>Browse</small></button>
+    <button data-route="favorites"><span aria-hidden="true">★</span><small>Favorites</small></button>
+    <button data-route="workflow"><span aria-hidden="true">→</span><small>First steps</small></button>
+  </nav>
+
+  <dialog id="helpDialog" aria-labelledby="helpTitle">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">Always available</p>
+        <h2 id="helpTitle">Quick Help</h2>
+      </div>
+      <button class="icon-button" id="closeHelp" aria-label="Close quick help">×</button>
+    </div>
+    <div class="help-grid">
+      <button data-open-item="first-prompt"><strong>Fast workflow</strong><span>Choose → fill → preview → copy</span></button>
+      <button data-open-item="syntax-basics"><strong>Template syntax</strong><span>What {{placeholders}} mean</span></button>
+      <button data-open-item="copy-launch"><strong>Open an AI app</strong><span>Copy first, then launch</span></button>
+      <button data-open-item="troubleshooting"><strong>Something failed</strong><span>Quick checks and recovery</span></button>
+    </div>
+    <div class="warning"><strong>Privacy reminder:</strong> Review the generated prompt before sending it to any external AI service. Avoid confidential or personal information unless your chosen service and policy permit it.</div>
+  </dialog>
+
+  <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
