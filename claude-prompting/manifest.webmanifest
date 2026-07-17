@@ -1,0 +1,22 @@
+{
+  "name": "Claude Prompt Fieldbook",
+  "short_name": "Prompt Fieldbook",
+  "description": "An offline-first programming prompt cheat sheet and guided prompt builder for Claude Fable 5.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f5f2e9",
+  "theme_color": "#10221b",
+  "lang": "en",
+  "categories": ["education", "developer tools", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Build a prompt", "short_name": "Builder", "url": "./#builder", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Fix a result", "short_name": "Troubleshoot", "url": "./#troubleshoot", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

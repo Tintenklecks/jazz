@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10221b">
+  <meta name="description" content="An offline-first, interactive cheat sheet for prompting Claude Fable 5 on programming tasks.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Prompt Fieldbook">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Claude Prompt Fieldbook</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="app-header">
+    <a class="brand" href="#home" data-route="reference" aria-label="Claude Prompt Fieldbook home">
+      <span class="brand-mark" aria-hidden="true">{·}</span>
+      <span><strong>Prompt Fieldbook</strong><small>Claude Fable 5 · student edition</small></span>
+    </a>
+    <button class="icon-button help-button" id="helpButton" type="button" aria-label="Open quick help">
+      <span aria-hidden="true">?</span>
+    </button>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="heroTitle">
+      <p class="eyebrow">Programming reference · verified 17 Jul 2026</p>
+      <h1 id="heroTitle">Write prompts that make hard coding work feel tractable.</h1>
+      <p>Build a prompt, find a proven pattern, or diagnose a response that went off track.</p>
+      <label class="hero-search" for="searchInput">
+        <span aria-hidden="true">⌕</span>
+        <span class="sr-only">Search the prompt reference</span>
+        <input id="searchInput" type="search" inputmode="search" autocomplete="off" placeholder="Search “debug”, “effort”, “format”…">
+        <kbd>/</kbd>
+      </label>
+      <div class="scope-note" role="note">
+        <span class="status-dot" aria-hidden="true"></span>
+        Scope: Claude Fable 5 / Mythos 5, plus current cross-model prompting practices
+      </div>
+    </section>
+
+    <nav class="section-tabs" aria-label="Application sections">
+      <button type="button" class="tab active" data-view="reference" aria-current="page">Reference</button>
+      <button type="button" class="tab" data-view="builder">Build a prompt</button>
+      <button type="button" class="tab" data-view="troubleshoot">Fix a result</button>
+      <button type="button" class="tab" data-view="sources">Sources</button>
+    </nav>
+
+    <section class="view active" id="referenceView" data-view-panel="reference" aria-labelledby="referenceTitle">
+      <div class="section-heading">
+        <div><p class="eyebrow">Fast paths</p><h2 id="referenceTitle">Choose what you’re doing</h2></div>
+        <button type="button" class="text-button" id="showAllButton">Show all</button>
+      </div>
+      <div class="category-grid" id="categoryGrid" aria-label="Prompt categories"></div>
+
+      <section class="quick-strip" aria-labelledby="quickTitle">
+        <div class="section-heading compact"><h2 id="quickTitle">Use it now</h2></div>
+        <div class="recipe-row" id="recipeRow"></div>
+      </section>
+
+      <section class="library" aria-labelledby="libraryTitle">
+        <div class="section-heading">
+          <div><p class="eyebrow">Pocket library</p><h2 id="libraryTitle">Prompt patterns</h2></div>
+          <span class="result-count" id="resultCount" aria-live="polite"></span>
+        </div>
+        <div class="filters" aria-label="Reference filters">
+          <label>Task
+            <select id="taskFilter">
+              <option value="all">All tasks</option>
+              <option value="build">Build</option>
+              <option value="debug">Debug</option>
+              <option value="review">Review</option>
+              <option value="learn">Learn</option>
+              <option value="agent">Agent runs</option>
+            </select>
+          </label>
+          <label>Level
+            <select id="levelFilter">
+              <option value="all">All levels</option>
+              <option value="starter">Starter</option>
+              <option value="practical">Practical</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </label>
+          <label>Scope
+            <select id="scopeFilter">
+              <option value="all">All guidance</option>
+              <option value="general">All current Claude</option>
+              <option value="fable">Fable 5 specific</option>
+            </select>
+          </label>
+          <button type="button" class="reset-button" id="resetFilters">Reset</button>
+        </div>
+        <div class="active-filter" id="activeFilter" hidden></div>
+        <div class="card-grid" id="cardGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <span aria-hidden="true">⌕</span>
+          <h3>No matching patterns</h3>
+          <p>Try a broader word or clear the filters.</p>
+          <button type="button" class="primary-button" id="emptyReset">Reset search & filters</button>
+        </div>
+      </section>
+
+      <section class="personal" id="personalSection" aria-label="Saved and recently viewed patterns">
+        <div><h2>Favorites</h2><div class="mini-list" id="favoritesList"></div></div>
+        <div><h2>Recently viewed</h2><div class="mini-list" id="recentList"></div></div>
+      </section>
+    </section>
+
+    <section class="view" id="builderView" data-view-panel="builder" aria-labelledby="builderTitle" hidden>
+      <div class="workflow-shell">
+        <div class="workflow-intro">
+          <p class="eyebrow">Guided workflow</p>
+          <h2 id="builderTitle">Prompt builder</h2>
+          <p>Answer four short questions. Your inputs stay in this browser and are inserted into a reusable prompt.</p>
+        </div>
+        <div class="progress-wrap" aria-label="Builder progress">
+          <div class="progress-meta"><span id="progressLabel">Step 1 of 5</span><span id="progressName">Task</span></div>
+          <div class="progress-track"><span id="progressBar"></span></div>
+        </div>
+        <form id="builderForm" novalidate>
+          <section class="builder-step active" data-step="0" aria-labelledby="step0Title">
+            <p class="step-number">01 · Task</p><h3 id="step0Title">What should Claude do?</h3>
+            <div class="choice-grid" role="radiogroup" aria-label="Task type">
+              <label class="choice"><input type="radio" name="builderTask" value="build" checked><span><b>Build</b><small>Create or change code</small></span></label>
+              <label class="choice"><input type="radio" name="builderTask" value="debug"><span><b>Debug</b><small>Find and fix a failure</small></span></label>
+              <label class="choice"><input type="radio" name="builderTask" value="review"><span><b>Review</b><small>Inspect code for issues</small></span></label>
+              <label class="choice"><input type="radio" name="builderTask" value="explain"><span><b>Explain</b><small>Learn a concept or codebase</small></span></label>
+            </div>
+          </section>
+          <section class="builder-step" data-step="1" aria-labelledby="step1Title" hidden>
+            <p class="step-number">02 · Outcome</p><h3 id="step1Title">What does “done” look like?</h3>
+            <label class="field-label" for="objectiveInput">Objective <span>required</span></label>
+            <textarea id="objectiveInput" rows="4" maxlength="700" placeholder="Example: Add keyboard navigation to the command palette without changing its visual layout."></textarea>
+            <div class="field-footer"><small>Start with a verb and name the observable result.</small><span id="objectiveCount">0/700</span></div>
+            <p class="field-error" id="objectiveError" role="alert" hidden>Describe the outcome in at least 8 characters.</p>
+          </section>
+          <section class="builder-step" data-step="2" aria-labelledby="step2Title" hidden>
+            <p class="step-number">03 · Context</p><h3 id="step2Title">Give Claude the boundaries.</h3>
+            <label class="field-label" for="contextInput">Context and known facts <span>required</span></label>
+            <textarea id="contextInput" rows="5" maxlength="1200" placeholder="Example: Vanilla JavaScript PWA. The bug reproduces in Safari 18. Keep the public API stable. Tests use Vitest."></textarea>
+            <div class="field-footer"><small>Include stack, relevant files, evidence, and constraints.</small><span id="contextCount">0/1200</span></div>
+            <label class="field-label" for="excludeInput">Out of scope <span>optional</span></label>
+            <input id="excludeInput" type="text" maxlength="300" placeholder="Example: No dependencies or unrelated refactors">
+            <p class="field-error" id="contextError" role="alert" hidden>Add at least one useful fact or constraint.</p>
+          </section>
+          <section class="builder-step" data-step="3" aria-labelledby="step3Title" hidden>
+            <p class="step-number">04 · Controls</p><h3 id="step3Title">How should Claude work and report?</h3>
+            <div class="two-fields">
+              <label>Effort
+                <select id="effortInput"><option value="medium">Medium · routine</option><option value="high" selected>High · default</option><option value="xhigh">X-high · hardest work</option><option value="low">Low · quick interaction</option></select>
+              </label>
+              <label>Final response
+                <select id="formatInput"><option value="concise">Concise summary</option><option value="steps">Numbered steps</option><option value="table">Comparison table</option><option value="teaching">Student explanation</option></select>
+              </label>
+            </div>
+            <fieldset class="check-group"><legend>Working rules</legend>
+              <label><input id="verifyInput" type="checkbox" checked> Verify with relevant tests or checks</label>
+              <label><input id="evidenceInput" type="checkbox" checked> Ground progress claims in tool results</label>
+              <label><input id="pauseInput" type="checkbox" checked> Pause only for destructive actions, scope changes, or missing user-only input</label>
+            </fieldset>
+          </section>
+          <section class="builder-step result-step" data-step="4" aria-labelledby="step4Title" hidden>
+            <p class="step-number">05 · Ready</p><h3 id="step4Title">Your prompt is ready.</h3>
+            <p class="result-hint">Place stable behavior in a system prompt when possible; keep the changing task and context in the user prompt.</p>
+            <div class="code-shell"><div class="code-head"><span>Generated prompt</span><button type="button" class="copy-button" data-copy-target="generatedPrompt">Copy</button></div><pre><code id="generatedPrompt"></code></pre></div>
+            <div class="summary-grid" id="builderSummary"></div>
+          </section>
+          <div class="workflow-controls">
+            <button type="button" class="secondary-button" id="builderBack" disabled>Back</button>
+            <button type="button" class="primary-button" id="builderNext">Next</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="view" id="troubleshootView" data-view-panel="troubleshoot" aria-labelledby="troubleTitle" hidden>
+      <div class="workflow-shell troubleshoot-shell">
+        <p class="eyebrow">Decision guide</p><h2 id="troubleTitle">Fix a result</h2>
+        <p>Choose the closest symptom. You’ll get a focused diagnosis, a prompt patch, and a fallback path.</p>
+        <div class="trouble-grid" id="troubleGrid"></div>
+        <article class="trouble-result" id="troubleResult" hidden aria-live="polite"></article>
+      </div>
+    </section>
+
+    <section class="view" id="sourcesView" data-view-panel="sources" aria-labelledby="sourcesTitle" hidden>
+      <div class="sources-shell">
+        <p class="eyebrow">Primary sources</p><h2 id="sourcesTitle">Verified against Anthropic documentation</h2>
+        <p>This fieldbook summarizes and restructures official guidance; it is not affiliated with Anthropic. Links require a network connection.</p>
+        <div class="source-list">
+          <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5" target="_blank" rel="noopener"><span>01</span><div><b>Prompting Claude Fable 5</b><small>Model-specific behavior, long runs, effort, memory, safety</small></div><i aria-hidden="true">↗</i></a>
+          <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener"><span>02</span><div><b>Prompting best practices</b><small>Clarity, examples, XML, long context, tools, agent workflows</small></div><i aria-hidden="true">↗</i></a>
+          <a href="https://platform.claude.com/docs/en/about-claude/models/overview" target="_blank" rel="noopener"><span>03</span><div><b>Models overview</b><small>Availability, model IDs, capabilities, compatibility</small></div><i aria-hidden="true">↗</i></a>
+          <a href="https://platform.claude.com/docs/en/build-with-claude/effort" target="_blank" rel="noopener"><span>04</span><div><b>Effort</b><small>Supported levels and capability/latency/token trade-offs</small></div><i aria-hidden="true">↗</i></a>
+          <a href="https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback" target="_blank" rel="noopener"><span>05</span><div><b>Refusals and fallback</b><small>Fable 5 refusal stop reason and fallback handling</small></div><i aria-hidden="true">↗</i></a>
+        </div>
+        <aside class="verification-note"><b>Accessed 17 July 2026</b><p>Model behavior and API support can change. Recheck the linked model and migration pages before shipping production integrations.</p></aside>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Primary mobile navigation">
+    <button type="button" data-view="reference" class="active"><span aria-hidden="true">⌂</span>Reference</button>
+    <button type="button" data-view="builder"><span aria-hidden="true">＋</span>Builder</button>
+    <button type="button" data-view="troubleshoot"><span aria-hidden="true">↯</span>Fix result</button>
+    <button type="button" id="bottomHelp"><span aria-hidden="true">?</span>Help</button>
+  </nav>
+
+  <dialog id="cardDialog" class="card-dialog" aria-labelledby="dialogTitle">
+    <div class="dialog-top"><button type="button" class="back-button" id="closeCard" aria-label="Close pattern details">←</button><span id="dialogCategory"></span><button type="button" class="favorite-button" id="dialogFavorite" aria-label="Add to favorites">☆</button></div>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <dialog id="helpDialog" class="help-dialog" aria-labelledby="helpTitle">
+    <div class="dialog-top"><div><p class="eyebrow">Always available</p><h2 id="helpTitle">Quick help</h2></div><button type="button" class="back-button" id="closeHelp" aria-label="Close quick help">×</button></div>
+    <div class="help-grid">
+      <section><h3>Prompt anatomy</h3><ol><li><b>Task</b> — the action</li><li><b>Context</b> — facts Claude cannot infer</li><li><b>Constraints</b> — boundaries and trade-offs</li><li><b>Output</b> — format and acceptance criteria</li><li><b>Checks</b> — how “done” is verified</li></ol></section>
+      <section><h3>Syntax</h3><p><code>&lt;placeholder&gt;</code> means replace the whole value. XML-like tags such as <code>&lt;context&gt;</code> are literal structure you may keep.</p><p>Use triple backticks around pasted code. Never paste API keys, passwords, private data, or secrets.</p></section>
+      <section><h3>Fast fixes</h3><ul><li>Wrong format → show one desired example.</li><li>Too broad → name what is out of scope.</li><li>Made-up progress → require tool evidence.</li><li>Stops early → state the real pause conditions.</li></ul></section>
+      <section class="warning-panel"><h3>Safety checkpoint</h3><p>Ask before destructive or hard-to-reverse operations. Review generated commands before running them. Fable 5 may refuse some cybersecurity and life-science requests; handle <code>stop_reason: "refusal"</code> in API clients.</p></section>
+      <section><h3>Keyboard</h3><dl><div><dt><kbd>/</kbd></dt><dd>Focus search</dd></div><div><dt><kbd>Esc</kbd></dt><dd>Close a dialog</dd></div><div><dt><kbd>Tab</kbd></dt><dd>Move through controls</dd></div></dl></section>
+      <a class="docs-link" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener">Open official prompting docs <span aria-hidden="true">↗</span></a>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
